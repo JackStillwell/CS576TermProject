@@ -76,18 +76,24 @@ public class ChessBoard {
 
         // Is the piece already on the board?
         // If K / Q only one of each type can exist
-        if(pieceCode.endsWith("K") || pieceCode.endsWith("Q"))
+        // NOTE: Modified to allow more than one Queen based on the
+        //       pawn exchange rule.
+        if(pieceCode.endsWith("K") /* || pieceCode.endsWith("Q") */)
         {
             if(numberOfPiecesOnBoard(pieceCode) > 0)
                 throw new Exception("Too many pieces already on board: " + pieceCode);
         }
 
         // If B / N / R only two of each type can exist
+        // NOTE: Disabled to account for pawn exchange rule. The validity
+        //       of the board is not a job of the program.
+        /*
         if(pieceCode.endsWith("B") || pieceCode.endsWith("N") || pieceCode.endsWith("R"))
         {
             if(numberOfPiecesOnBoard(pieceCode) > 1)
                 throw new Exception("Too many pieces already on board: " + pieceCode);
         }
+        */
 
         // If P only 8 can exist
         if(pieceCode.endsWith("P"))
@@ -152,5 +158,26 @@ public class ChessBoard {
             return 8;
         else
             throw new Exception("Invalid Char to Int Coordinate Conversion: " + in);
+    }
+
+    private char getCoordCharFromCoordNum(int in) throws Exception {
+        if(in == 1)
+            return 'a';
+        else if(in == 2)
+            return 'b';
+        else if(in == 3)
+            return 'c';
+        else if(in == 4)
+            return 'd';
+        else if(in == 5)
+            return 'e';
+        else if(in == 6)
+            return 'f';
+        else if(in == 7)
+            return 'g';
+        else if(in == 8)
+            return 'h';
+        else
+            throw new Exception("Invalid Int to Char Coordinate Conversion: " + in);
     }
 }
