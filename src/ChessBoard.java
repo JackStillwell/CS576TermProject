@@ -179,4 +179,9 @@ public class ChessBoard {
         else
             throw new Exception("Invalid Int to Char Coordinate Conversion: " + in);
     }
+
+    public String getPieceAtCoord(int row, int col)
+    {
+	    return new String(board[one][two]);
+    }
 }
