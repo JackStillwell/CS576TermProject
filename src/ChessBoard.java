@@ -131,13 +131,18 @@ public class ChessBoard {
         return numPieces;
     }
 
-    private int[] getCoordinatesFromLocationCode(String locationCode) throws Exception {
+    public int[] getCoordinatesFromLocationCode(String locationCode) throws Exception {
         char firstCoordinate = locationCode.charAt(0);
 
         // must subtract 1 because numbering starts at zero
         int secondCoordinate = Integer.parseInt(locationCode.substring(1)) - 1;
 
         return new int[]{getCoordNumFromCoordChar(firstCoordinate), secondCoordinate};
+    }
+
+    public String getLocationCodeFromCoordinates(int row, int col) throws Exception
+    {
+        return getCoordCharFromCoordNum(row) + "" + col;
     }
 
     public int getCoordNumFromCoordChar(char in) throws Exception {
