@@ -1,0 +1,3 @@
+WHITE: Rf1, Kg1, Pf2, Ph2, Pg3
+dfajdfsa;kljfdsa;kljfsdjk
+PIECE TO MOVE: Rf1

@@ -53,29 +53,29 @@ public class FileInterpreter {
 			throw new Exception("Incorrect format of file in first line");
 		}
 
-		addLineToBoard(whiteLine, board);
+		addLineToBoard(whiteLine, board, 'W');
 
 		if(!blackLine[0].startsWith("BLACK: "))
 		{
 			throw new Exception("Incorrect format of file in second line");
 		}
 
-		addLineToBoard(blackLine, board);
+		addLineToBoard(blackLine, board, 'B');
 
 		return board;
 	}
 
-	private void addLineToBoard(String[] line, ChessBoard board) throws Exception
+	private void addLineToBoard(String[] line, ChessBoard board, char sideColor) throws Exception
 	{
 		// add the first entry, following wherever the space is
-		board.addPieceToBoard(line[0].substring(line[0].indexOf(" ")));
+		board.addPieceToBoard(sideColor + line[0].substring(line[0].indexOf(" ") + 1));
 
 		for(int i = 1; i < line.length; i++)
 		{
 			// skip the space at the start
 			// if in correct format, will always have
 			// a space as the first character
-			board.addPieceToBoard(line[i].substring(1));
+			board.addPieceToBoard(sideColor + line[i].substring(1));
 		}
 	}
 
@@ -83,11 +83,11 @@ public class FileInterpreter {
 	{
 		String[] requestLine = fileLineArray.get(2).split(" ");
 
-		if(!requestLine[0].startsWith("PIECE TO MOVE:"))
+		if(!(requestLine[0].equals("PIECE") && requestLine[1].equals("TO") && requestLine[2].equals("MOVE:")))
 		{
-			throw new Exception("Incorrect format of file in first line");
+			throw new Exception("Incorrect format of file in third line");
 		}
 
-		return requestLine[1];
+		return requestLine[3];
 	}
 }
