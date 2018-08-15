@@ -21,6 +21,12 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/*
+
+    Black starts on 8, White starts on 1
+
+ */
+
 public class ChessBoard {
 
     private ArrayList<String> validPieces;
@@ -192,5 +198,10 @@ public class ChessBoard {
     public String getPieceAtCoord(int row, int col)
     {
 	    return board[row][col];
+    }
+
+    public ArrayList<String> getValidLocations()
+    {
+        return new ArrayList<String>(validLocation);
     }
 }
