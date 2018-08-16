@@ -148,7 +148,10 @@ public class ChessBoard {
 
     public String getLocationCodeFromCoordinates(int row, int col) throws Exception
     {
-        return getCoordCharFromCoordNum(row) + "" + col;
+        // add one to the col to offset the start at zero
+        int colPlusOne = col + 1;
+
+        return getCoordCharFromCoordNum(row) + "" + colPlusOne;
     }
 
     public int getCoordNumFromCoordChar(char in) throws Exception {

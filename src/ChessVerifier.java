@@ -14,6 +14,34 @@ public class ChessVerifier {
 
     }
 
+    public String testMain(String inputFileName)
+    {
+        try {
+            FileInterpreter fi = new FileInterpreter(inputFileName);
+            ChessBoard board = fi.constructBoardFromFile();
+            String piece = fi.retrievePieceToCalculateFromFile();
+            String pieceLocation = piece.substring(1);
+
+            ArrayList<String> availableMoves = getAvailableMoves(pieceLocation, board);
+
+            StringBuilder returnStringBuilder = new StringBuilder();
+            returnStringBuilder.append("LEGAL MOVES FOR " + piece + ":");
+
+            for(String s : availableMoves)
+            {
+                returnStringBuilder.append(" " + s + ",");
+            }
+
+            returnStringBuilder.deleteCharAt(returnStringBuilder.lastIndexOf(","));
+
+            return returnStringBuilder.toString();
+        }
+        catch(Exception x)
+        {
+            return "ERROR: " + x.getMessage();
+        }
+    }
+
     private ArrayList<String> getAvailableMoves(String pieceLocation, ChessBoard board) throws Exception {
 
         int[] pieceCoordinates = board.getCoordinatesFromLocationCode(pieceLocation);
