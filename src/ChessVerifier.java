@@ -6,6 +6,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class ChessVerifier {
 
@@ -54,36 +55,51 @@ public class ChessVerifier {
         {
             // move one in any unoccupied direction, as long as there are no
             // enemy pieces which could capture following that move
-            // essentially going to need to run the engine for every piece
-            // on the board to ensure there are no capture moves available
 
-            ArrayList<String> restrictedMoves = new ArrayList<>();
-            availableMoves.addAll(board.getValidLocations());
+            // new plan -- execute all possible moves for the king and
+            // use those new boards to calculate if the king would be
+            // in danger, if so remove that option
 
-            // get all moves for every enemy piece on the board and add to arraylist
-            for(int i = 0; i < 8; i++)
+            char oppositeSide = 'B';
+
+            if(pieceCode.startsWith("B"))
+                oppositeSide = 'W';
+
+            // Step 1: Calculate Possible Moves
+
+            ArrayList<String> possibleMoves = getKingMoves(pieceCoordinates[0], pieceCoordinates[1], board, pieceCode.charAt(0));
+
+            // Step 2: Use those moves to build all possible boards after the move
+
+            ArrayList<ChessBoard> possibleBoards = new ArrayList<>();
+
+            for(String locationCode : possibleMoves)
             {
-                for(int j = 0; j < 8; j++)
-                {
-                    if(board.getPieceAtCoord(i,j).charAt(0) != pieceCode.charAt(0))
-                    {
-                        restrictedMoves.addAll(getAvailableMoves(board.getLocationCodeFromCoordinates(i,j), board));
-                    }
-                }
+                String[][] rawBoard = board.getRawBoardArray();
+                int[] coords = board.getCoordinatesFromLocationCode(locationCode);
+
+                // put the king in the possible position
+                rawBoard[coords[0]][coords[1]] = pieceCode;
+
+                // fill in the space left behind
+                rawBoard[pieceCoordinates[0]][pieceCoordinates[1]] = "x";
+
+                possibleBoards.add(new ChessBoard(rawBoard));
             }
 
-            // get the difference of that arraylist and all spaces on the board
-            availableMoves.removeAll(restrictedMoves);
+            // Step 3: ensure the king is not in danger in any
+            // of the possible boards, if it is, remove that board
 
-            // of those remaining, return every piece within 1 of the king on either row or col
-            for(String locationCode : availableMoves)
+            possibleBoards.removeIf(predicateIsPieceInDanger(pieceLocation, oppositeSide));
+
+            // Step 4: find the locations of the king in the surviving boards
+            // and add those locations to availableMoves
+
+            for( ChessBoard possibleBoard : possibleBoards)
             {
-                int[] pieceCoords = board.getCoordinatesFromLocationCode(locationCode);
+                int[] kingCoords = possibleBoard.getCoordsOfPiece(pieceCode);
 
-                if(!validKingMovement(pieceCoordinates[0], pieceCoordinates[1],pieceCoords[0],pieceCoords[1]))
-                {
-                    availableMoves.remove(locationCode);
-                }
+                availableMoves.add(board.getLocationCodeFromCoordinates(kingCoords[0],kingCoords[1]));
             }
 
             return availableMoves;
@@ -177,15 +193,12 @@ public class ChessVerifier {
     {
         ArrayList<String> availableMoves = new ArrayList<>();
 
-        int localRow = row;
-        int localCol = col;
+        int localRow = row + 1;
+        int localCol = col + 1;
 
         // go from current position to positive row positive col
         while(localRow < 8 && localCol < 8)
         {
-            localRow++;
-            localCol++;
-
             if(board.getPieceAtCoord(localRow, localCol).equals("x"))
             {
                 availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));
@@ -197,18 +210,18 @@ public class ChessVerifier {
                     availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));
                 break;
             }
+
+            localRow++;
+            localCol++;
         }
 
         // reset between checks
-        localRow = row;
-        localCol = col;
+        localRow = row + 1;
+        localCol = col - 1;
 
         // go from current position to positive row negative col
         while(localRow < 8 && localCol >= 0)
         {
-            localRow++;
-            localCol--;
-
             if(board.getPieceAtCoord(localRow, localCol).equals("x"))
             {
                 availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));
@@ -220,18 +233,18 @@ public class ChessVerifier {
                     availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));
                 break;
             }
+
+            localRow++;
+            localCol--;
         }
 
         // reset between checks
-        localRow = row;
-        localCol = col;
+        localRow = row - 1;
+        localCol = col + 1;
 
         // go from current position to negative row positive col
         while(localRow >= 0 && localCol < 8)
         {
-            localRow--;
-            localCol++;
-
             if(board.getPieceAtCoord(localRow, localCol).equals("x"))
             {
                 availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));
@@ -243,18 +256,18 @@ public class ChessVerifier {
                     availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));
                 break;
             }
+
+            localRow--;
+            localCol++;
         }
 
         // reset between checks
-        localRow = row;
-        localCol = col;
+        localRow = row - 1;
+        localCol = col - 1;
 
         // go from current position to negative row negative col
         while(localRow >= 0 && localCol >= 0)
         {
-            localRow--;
-            localCol--;
-
             if(board.getPieceAtCoord(localRow, localCol).equals("x"))
             {
                 availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));
@@ -266,6 +279,9 @@ public class ChessVerifier {
                     availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));
                 break;
             }
+
+            localRow--;
+            localCol--;
         }
 
         return availableMoves;
@@ -431,25 +447,6 @@ public class ChessVerifier {
         return availableMoves;
     }
 
-    private boolean validKingMovement(int kingRow, int kingCol, int row, int col)
-    {
-        // Diagonal Movement
-        if((kingRow - row == -1 || kingRow - row == 1) &&
-           (kingCol - col == -1 || kingCol - col == 1))
-        {
-            return true;
-        }
-
-        else if(kingRow - row == 0 &&
-           (kingCol - col == -1 || kingCol - col == 1))
-        {
-            return true;
-        }
-
-        else return (kingRow - row == -1 || kingRow - row == 1) &&
-                    kingCol - col == 0;
-    }
-
     private void straightLineMovementLoop(int col,
                                           int row,
                                           ArrayList<String> availableMoves,
@@ -519,5 +516,74 @@ public class ChessVerifier {
                 return true;
             }
         }
+    }
+
+    private ArrayList<String> getKingMoves(int i, int j, ChessBoard board, char sideColor) throws Exception
+    {
+        ArrayList<String> kingMoves = new ArrayList<>();
+
+        // all 8 possible movements
+        if(board.getPieceAtCoord(i, j+1).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i, j+1));
+        if(board.getPieceAtCoord(i, j-1).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i, j-1));
+        if(board.getPieceAtCoord(i+1, j).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j));
+        if(board.getPieceAtCoord(i-1, j).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j));
+        if(board.getPieceAtCoord(i+1, j+1).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j+1));
+        if(board.getPieceAtCoord(i+1, j-1).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j-1));
+        if(board.getPieceAtCoord(i-1, j+1).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j+1));
+        if(board.getPieceAtCoord(i-1, j-1).charAt(0) != sideColor)
+            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j-1));
+
+        return kingMoves;
+    }
+
+    private boolean isPieceInDanger(String locationCode, char oppositeColor, ChessBoard board)
+    {
+        try {
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (board.getPieceAtCoord(i, j).charAt(0) == oppositeColor &&
+                            board.getPieceAtCoord(i, j).charAt(1) != 'K')
+                    {
+                        ArrayList<String> availableMoves = getAvailableMoves(
+                                board.getLocationCodeFromCoordinates(i, j),
+                                board);
+
+                        if(availableMoves.contains(locationCode))
+                            return true;
+                    }
+                    if (board.getPieceAtCoord(i, j).charAt(0) == oppositeColor &&
+                            board.getPieceAtCoord(i, j).charAt(1) == 'K')
+                    {
+                        ArrayList<String> kingMoves = getKingMoves(i,j,board, oppositeColor);
+
+                        if(kingMoves.contains(locationCode))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+        catch(Exception x)
+        {
+            return false;
+        }
+    }
+
+    private Predicate<ChessBoard> predicateIsPieceInDanger(String locationCode, char oppositeColor)
+    {
+            return p -> isPieceInDanger(locationCode, oppositeColor, p);
     }
 }
