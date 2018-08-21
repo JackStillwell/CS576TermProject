@@ -1,6 +1,6 @@
 /*
     Jack Stillwell
-    Fillipos Volkolos
+    Filippos Vokolos
     CS576 Term Project "Chess"
     23 July 2018
  */
@@ -14,7 +14,7 @@ public class ChessVerifier {
 
     }
 
-    public String testMain(String inputFileName)
+    String testMain(String inputFileName)
     {
         try {
             FileInterpreter fi = new FileInterpreter(inputFileName);
@@ -25,11 +25,11 @@ public class ChessVerifier {
             ArrayList<String> availableMoves = getAvailableMoves(pieceLocation, board);
 
             StringBuilder returnStringBuilder = new StringBuilder();
-            returnStringBuilder.append("LEGAL MOVES FOR " + piece + ":");
+            returnStringBuilder.append("LEGAL MOVES FOR ").append(piece).append(":");
 
             for(String s : availableMoves)
             {
-                returnStringBuilder.append(" " + s + ",");
+                returnStringBuilder.append(" ").append(s).append(",");
             }
 
             returnStringBuilder.deleteCharAt(returnStringBuilder.lastIndexOf(","));
@@ -47,7 +47,7 @@ public class ChessVerifier {
         int[] pieceCoordinates = board.getCoordinatesFromLocationCode(pieceLocation);
         String pieceCode = board.getPieceAtCoord(pieceCoordinates[0], pieceCoordinates[1]);
 
-        ArrayList<String> availableMoves = new ArrayList<String>();
+        ArrayList<String> availableMoves = new ArrayList<>();
 
         // First, branch by piece type
         if(pieceCode.endsWith("K"))
@@ -154,82 +154,28 @@ public class ChessVerifier {
         }
     }
 
-    @SuppressWarnings("Duplicates")
     private ArrayList<String> getStraightLineMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
     {
-        ArrayList<String> availableMoves = new ArrayList<String>();
+        ArrayList<String> availableMoves = new ArrayList<>();
 
         // go from current position positive along row
-        for(int i = col+1; i < 8; i++)
-        {
-            if(board.getPieceAtCoord(row, i).equals("x"))
-            {
-                availableMoves.add(board.getLocationCodeFromCoordinates(row, i));
-            }
-            else
-            {
-                // add capture move if not same color
-                if(!board.getPieceAtCoord(row,i).startsWith(sideColor + ""))
-                    availableMoves.add(board.getLocationCodeFromCoordinates(row, i));
-                break;
-            }
-        }
+        straightLineMovementLoop(col, row, availableMoves, board, sideColor, true, col+1, false);
 
         // go from current position negative along row
-        for(int i = col-1; i >= 0; i--)
-        {
-            if(board.getPieceAtCoord(row, i).equals("x"))
-            {
-                availableMoves.add(board.getLocationCodeFromCoordinates(row, i));
-            }
-            else
-            {
-                // add capture move if not same color
-                if(!board.getPieceAtCoord(row,i).startsWith(sideColor + ""))
-                    availableMoves.add(board.getLocationCodeFromCoordinates(row, i));
-                break;
-            }
-        }
+        straightLineMovementLoop(col, row, availableMoves, board, sideColor, false, col-1, false);
 
         // go from current position positive along column
-        for(int i = row+1; i < 8; i++)
-        {
-            if(board.getPieceAtCoord(i, col).equals("x"))
-            {
-                availableMoves.add(board.getLocationCodeFromCoordinates(i, col));
-            }
-            else
-            {
-                // add capture move if not same color
-                if(!board.getPieceAtCoord(i,col).startsWith(sideColor + ""))
-                    availableMoves.add(board.getLocationCodeFromCoordinates(i, col));
-                break;
-            }
-        }
+        straightLineMovementLoop(col, row, availableMoves, board, sideColor, true, row+1, true);
 
         // go from current position negative along column
-        for(int i = row-1; i >= 0; i--)
-        {
-            if(board.getPieceAtCoord(i, col).equals("x"))
-            {
-                availableMoves.add(board.getLocationCodeFromCoordinates(i, col));
-            }
-            else
-            {
-                // add capture move if not same color
-                if(!board.getPieceAtCoord(i,col).startsWith(sideColor + ""))
-                    availableMoves.add(board.getLocationCodeFromCoordinates(i, col));
-                break;
-            }
-        }
+        straightLineMovementLoop(col, row, availableMoves, board, sideColor, false, row-1, true);
 
         return availableMoves;
     }
 
-    @SuppressWarnings("Duplicates")
     private ArrayList<String> getDiagonalLineMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
     {
-        ArrayList<String> availableMoves = new ArrayList<String>();
+        ArrayList<String> availableMoves = new ArrayList<>();
 
         int localRow = row;
         int localCol = col;
@@ -325,13 +271,12 @@ public class ChessVerifier {
         return availableMoves;
     }
 
-    @SuppressWarnings("Duplicates")
     private ArrayList<String> getPawnMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
     {
         // pawn -- forward in one direction
         // diagonal capture, two movements if in original place
 
-        ArrayList<String> availableMoves = new ArrayList<String>();
+        ArrayList<String> availableMoves = new ArrayList<>();
 
         if(sideColor == 'W')
         {
@@ -415,10 +360,9 @@ public class ChessVerifier {
         return availableMoves;
     }
 
-    @SuppressWarnings("Duplicates")
     private ArrayList<String> getKnightMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
     {
-        ArrayList<String> availableMoves = new ArrayList<String>();
+        ArrayList<String> availableMoves = new ArrayList<>();
 
         //up 1 left 2
         if(row + 1 < 8 && col - 2 >= 0 &&
@@ -502,13 +446,78 @@ public class ChessVerifier {
             return true;
         }
 
-        else if((kingRow - row == -1 || kingRow - row == 1) &&
-           kingCol - col == 0)
+        else return (kingRow - row == -1 || kingRow - row == 1) &&
+                    kingCol - col == 0;
+    }
+
+    private void straightLineMovementLoop(int col,
+                                          int row,
+                                          ArrayList<String> availableMoves,
+                                          ChessBoard board,
+                                          char sideColor,
+                                          boolean countUp,
+                                          int countFrom,
+                                          boolean isColumn)
+            throws Exception
+    {
+        // variable for positive vs negative
+        if(countUp)
         {
-            return true;
+            for(int i = countFrom; i < 8; i++)
+            {
+               if(straightLineMovementLogic(row, col, i, availableMoves, board, isColumn, sideColor))
+                   break;
+            }
         }
 
         else
+        {
+            for(int i = countFrom; i >= 0; i--)
+            {
+                if(straightLineMovementLogic(row, col, i, availableMoves, board, isColumn, sideColor))
+                   break;
+            }
+        }
+    }
+
+    private boolean straightLineMovementLogic(int row,
+                                           int col,
+                                           int i,
+                                           ArrayList<String> availableMoves,
+                                           ChessBoard board,
+                                           boolean isColumn,
+                                           char sideColor) throws Exception
+    {
+        // tests for whether column or row and matching piece x check
+        if (
+                (isColumn && board.getPieceAtCoord(i, col).equals("x")) ||
+                (!isColumn && board.getPieceAtCoord(row, i).equals("x"))
+        ) {
+            if(isColumn)
+                availableMoves.add(board.getLocationCodeFromCoordinates(i, col));
+            else
+                availableMoves.add(board.getLocationCodeFromCoordinates(row, i));
             return false;
+        }
+
+        else
+        {
+            // add capture move if not same color
+            if (isColumn)
+            {
+                if (!board.getPieceAtCoord(i, col).startsWith(sideColor + ""))
+                    availableMoves.add(board.getLocationCodeFromCoordinates(i, col));
+
+                return true;
+            }
+
+            else
+            {
+                if (!board.getPieceAtCoord(row, i).startsWith(sideColor + ""))
+                    availableMoves.add(board.getLocationCodeFromCoordinates(row, i));
+
+                return true;
+            }
+        }
     }
 }

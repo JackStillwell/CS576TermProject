@@ -1,0 +1,3 @@
+WHITE: Pb2, Pd2, Pe2, Rd3, Pe4, Pd5, Pe6, Kf6, Nf7
+BLACK: Pg2, Pf3, Pa4, Pg4, Bb5, Kc5, Qd7
+PIECE TO MOVE: Pf3
