@@ -90,7 +90,7 @@ public class ChessVerifier {
             // Step 3: ensure the king is not in danger in any
             // of the possible boards, if it is, remove that board
 
-            possibleBoards.removeIf(predicateIsPieceInDanger(pieceLocation, oppositeSide));
+            possibleBoards.removeIf(predicateIsPieceInDanger(pieceCode, oppositeSide));
 
             // Step 4: find the locations of the king in the surviving boards
             // and add those locations to availableMoves
@@ -543,9 +543,13 @@ public class ChessVerifier {
         return kingMoves;
     }
 
-    private boolean isPieceInDanger(String locationCode, char oppositeColor, ChessBoard board)
+    private boolean isPieceInDanger(String pieceCode, char oppositeColor, ChessBoard board)
     {
         try {
+
+            int[] locationCoords  = board.getCoordsOfPiece(pieceCode);
+
+            String locationCode = board.getLocationCodeFromCoordinates(locationCoords[0],locationCoords[1]);
 
             for (int i = 0; i < 8; i++)
             {
@@ -582,8 +586,8 @@ public class ChessVerifier {
         }
     }
 
-    private Predicate<ChessBoard> predicateIsPieceInDanger(String locationCode, char oppositeColor)
+    private Predicate<ChessBoard> predicateIsPieceInDanger(String pieceCode, char oppositeColor)
     {
-            return p -> isPieceInDanger(locationCode, oppositeColor, p);
+            return p -> isPieceInDanger(pieceCode, oppositeColor, p);
     }
 }

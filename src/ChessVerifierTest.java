@@ -55,7 +55,7 @@ class ChessVerifierTest {
     {
         ChessVerifier cv = new ChessVerifier();
 
-        assertEquals("LEGAL MOVES FOR Kc5: ", cv.testMain("src/ChessVerifierTestFileKing.txt"));
+        assertEquals("LEGAL MOVES FOR Kc5: c4, b6, b4", cv.testMain("src/ChessVerifierTestFileKing.txt"));
     }
 
     @org.junit.jupiter.api.Test

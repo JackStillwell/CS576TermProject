@@ -234,7 +234,21 @@ public class ChessBoard {
 
     public String[][] getRawBoardArray()
     {
-        return board;
+
+        // manually ensure a copy of the board is returned rather than a
+        // memory reference
+
+        String[][] copy_of_board = new String[8][8];
+
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                copy_of_board[i][j] = board[i][j];
+            }
+        }
+
+        return copy_of_board;
     }
 
     public int[] getCoordsOfPiece(String pieceCode) throws Exception
