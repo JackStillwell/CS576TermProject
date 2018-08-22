@@ -10,11 +10,6 @@ import java.util.function.Predicate;
 
 public class ChessVerifier {
 
-    public static void main(String[] args)
-    {
-
-    }
-
     String testMain(String inputFileName)
     {
         try {
