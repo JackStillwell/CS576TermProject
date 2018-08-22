@@ -3,11 +3,6 @@ public class CommandLineInterface {
     {
         ChessVerifier cv = new ChessVerifier();
 
-        for(String arg : args)
-        {
-            System.out.println(arg);
-        }
-
         try {
             System.out.println(cv.testMain(args[0]));
         }
