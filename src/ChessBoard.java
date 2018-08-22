@@ -27,19 +27,19 @@ import java.util.Arrays;
 
  */
 
-public class ChessBoard {
+class ChessBoard {
 
-    private ArrayList<String> validPieces;
-    private ArrayList<String> validLocation;
-    private String[][] board;
+    private final ArrayList<String> validPieces;
+    private final ArrayList<String> validLocation;
+    private final String[][] board;
 
-    public ChessBoard()
+    ChessBoard()
     {
         String[] validPieceArray = {"x",
                 "BK", "BQ", "BB", "BN", "BR", "BP",
                 "WK", "WQ", "WB", "WN", "WR", "WP"};
 
-        validPieces = new ArrayList<String>(Arrays.asList(validPieceArray));
+        validPieces = new ArrayList<>(Arrays.asList(validPieceArray));
 
         String[] validLocationArray = {
                 "a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
@@ -52,7 +52,7 @@ public class ChessBoard {
                 "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"
         };
 
-        validLocation = new ArrayList<String>(Arrays.asList(validLocationArray));
+        validLocation = new ArrayList<>(Arrays.asList(validLocationArray));
 
         board = new String[8][8];
 
@@ -65,13 +65,13 @@ public class ChessBoard {
         }
     }
 
-    public ChessBoard(String[][] boardIn)
+    ChessBoard(String[][] boardIn)
     {
         String[] validPieceArray = {"x",
                 "BK", "BQ", "BB", "BN", "BR", "BP",
                 "WK", "WQ", "WB", "WN", "WR", "WP"};
 
-        validPieces = new ArrayList<String>(Arrays.asList(validPieceArray));
+        validPieces = new ArrayList<>(Arrays.asList(validPieceArray));
 
         String[] validLocationArray = {
                 "a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
@@ -84,12 +84,12 @@ public class ChessBoard {
                 "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8"
         };
 
-        validLocation = new ArrayList<String>(Arrays.asList(validLocationArray));
+        validLocation = new ArrayList<>(Arrays.asList(validLocationArray));
 
         board = boardIn;
     }
 
-    public void addPieceToBoard(String input) throws Exception
+    void addPieceToBoard(String input) throws Exception
     {
         String pieceCode = input.substring(0,2);
         String locationCode = input.substring(2);
@@ -161,7 +161,7 @@ public class ChessBoard {
         return numPieces;
     }
 
-    public int[] getCoordinatesFromLocationCode(String locationCode) throws Exception {
+    int[] getCoordinatesFromLocationCode(String locationCode) throws Exception {
         char firstCoordinate = locationCode.charAt(0);
 
         // must subtract 1 because numbering starts at zero
@@ -170,7 +170,7 @@ public class ChessBoard {
         return new int[]{getCoordNumFromCoordChar(firstCoordinate), secondCoordinate};
     }
 
-    public String getLocationCodeFromCoordinates(int row, int col) throws Exception
+    String getLocationCodeFromCoordinates(int row, int col) throws Exception
     {
         // add one to the col to offset the start at zero
         int colPlusOne = col + 1;
@@ -178,7 +178,7 @@ public class ChessBoard {
         return getCoordCharFromCoordNum(row) + "" + colPlusOne;
     }
 
-    public int getCoordNumFromCoordChar(char in) throws Exception {
+    int getCoordNumFromCoordChar(char in) throws Exception {
         if(in == 'a')
             return 0;
         else if(in == 'b')
@@ -201,7 +201,7 @@ public class ChessBoard {
 
     // so far only used in tests
 
-    public char getCoordCharFromCoordNum(int in) throws Exception {
+    char getCoordCharFromCoordNum(int in) throws Exception {
         if(in == 0)
             return 'a';
         else if(in == 1)
@@ -222,17 +222,12 @@ public class ChessBoard {
             throw new Exception("Invalid Int to Char Coordinate Conversion: " + in);
     }
 
-    public String getPieceAtCoord(int row, int col)
+    String getPieceAtCoord(int row, int col)
     {
 	    return board[row][col];
     }
 
-    public ArrayList<String> getValidLocations()
-    {
-        return new ArrayList<String>(validLocation);
-    }
-
-    public String[][] getRawBoardArray()
+    String[][] getRawBoardArray()
     {
 
         // manually ensure a copy of the board is returned rather than a
@@ -242,16 +237,13 @@ public class ChessBoard {
 
         for(int i = 0; i < 8; i++)
         {
-            for(int j = 0; j < 8; j++)
-            {
-                copy_of_board[i][j] = board[i][j];
-            }
+            System.arraycopy(board[i], 0, copy_of_board[i], 0, 8);
         }
 
         return copy_of_board;
     }
 
-    public int[] getCoordsOfPiece(String pieceCode) throws Exception
+    int[] getCoordsOfPiece(String pieceCode) throws Exception
     {
         for(int i = 0; i < 8; i++)
         {

@@ -1,0 +1,176 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FileInterpreter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">&lt;empty package name&gt;</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FileInterpreter (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FileInterpreter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (31/ 31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;import java.io.BufferedReader;
+<i>2</i>&nbsp;import java.io.IOException;
+<i>3</i>&nbsp;import java.nio.charset.Charset;
+<i>4</i>&nbsp;import java.nio.file.Files;
+<i>5</i>&nbsp;import java.nio.file.Path;
+<i>6</i>&nbsp;import java.nio.file.Paths;
+<i>7</i>&nbsp;import java.util.ArrayList;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;class FileInterpreter {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;	private ArrayList&lt;String&gt; fileLineArray;
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;	FileInterpreter(String filepathString) throws Exception {</b>
+<b class="fc"><i>14</i>&nbsp;		Charset charset = Charset.forName(&quot;UTF-8&quot;);</b>
+<i>15</i>&nbsp;		BufferedReader reader;
+<i>16</i>&nbsp;		try
+<i>17</i>&nbsp;		{
+<b class="fc"><i>18</i>&nbsp;			Path filepath = Paths.get(filepathString);</b>
+<b class="fc"><i>19</i>&nbsp;			reader = Files.newBufferedReader(filepath, charset);</b>
+<i>20</i>&nbsp;		}
+<i>21</i>&nbsp;
+<b class="fc"><i>22</i>&nbsp;		catch (IOException e)</b>
+<i>23</i>&nbsp;		{
+<b class="fc"><i>24</i>&nbsp;			throw new Exception(&quot;Could not load specified file&quot;);</b>
+<b class="fc"><i>25</i>&nbsp;		}</b>
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;		fileLineArray = new ArrayList&lt;&gt;();</b>
+<i>28</i>&nbsp;		String inLine;
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;		while((inLine = reader.readLine()) != null)</b>
+<i>31</i>&nbsp;		{
+<b class="fc"><i>32</i>&nbsp;			fileLineArray.add(inLine);</b>
+<i>33</i>&nbsp;		}
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;		// PERSONAL NOTE: this format of if-throw is my nicer
+<i>36</i>&nbsp;		//                way of doing assertions. This way I
+<i>37</i>&nbsp;		//                get a legible error.
+<b class="fc"><i>38</i>&nbsp;		if(fileLineArray.size() != 3)</b>
+<i>39</i>&nbsp;		{
+<b class="fc"><i>40</i>&nbsp;			throw new Exception(&quot;Incorrect Number of Lines in the File&quot;);</b>
+<i>41</i>&nbsp;		}
+<b class="fc"><i>42</i>&nbsp;	}</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;	ChessBoard constructBoardFromFile() throws Exception
+<i>45</i>&nbsp;	{
+<b class="fc"><i>46</i>&nbsp;		ChessBoard board = new ChessBoard();</b>
+<i>47</i>&nbsp;
+<b class="fc"><i>48</i>&nbsp;		String[] whiteLine = fileLineArray.get(0).split(&quot;,&quot;);</b>
+<b class="fc"><i>49</i>&nbsp;		String[] blackLine = fileLineArray.get(1).split(&quot;,&quot;);</b>
+<i>50</i>&nbsp;
+<b class="fc"><i>51</i>&nbsp;		if(!whiteLine[0].startsWith(&quot;WHITE: &quot;))</b>
+<i>52</i>&nbsp;		{
+<b class="fc"><i>53</i>&nbsp;			throw new Exception(&quot;Incorrect format of file in first line&quot;);</b>
+<i>54</i>&nbsp;		}
+<i>55</i>&nbsp;
+<b class="fc"><i>56</i>&nbsp;		addLineToBoard(whiteLine, board, &#39;W&#39;);</b>
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;		if(!blackLine[0].startsWith(&quot;BLACK: &quot;))</b>
+<i>59</i>&nbsp;		{
+<b class="fc"><i>60</i>&nbsp;			throw new Exception(&quot;Incorrect format of file in second line&quot;);</b>
+<i>61</i>&nbsp;		}
+<i>62</i>&nbsp;
+<b class="fc"><i>63</i>&nbsp;		addLineToBoard(blackLine, board, &#39;B&#39;);</b>
+<i>64</i>&nbsp;
+<b class="fc"><i>65</i>&nbsp;		return board;</b>
+<i>66</i>&nbsp;	}
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;	private void addLineToBoard(String[] line, ChessBoard board, char sideColor) throws Exception
+<i>69</i>&nbsp;	{
+<i>70</i>&nbsp;		// add the first entry, following wherever the space is
+<b class="fc"><i>71</i>&nbsp;		board.addPieceToBoard(sideColor + line[0].substring(line[0].indexOf(&quot; &quot;) + 1));</b>
+<i>72</i>&nbsp;
+<b class="fc"><i>73</i>&nbsp;		for(int i = 1; i &lt; line.length; i++)</b>
+<i>74</i>&nbsp;		{
+<i>75</i>&nbsp;			// skip the space at the start
+<i>76</i>&nbsp;			// if in correct format, will always have
+<i>77</i>&nbsp;			// a space as the first character
+<b class="fc"><i>78</i>&nbsp;			board.addPieceToBoard(sideColor + line[i].substring(1));</b>
+<i>79</i>&nbsp;		}
+<b class="fc"><i>80</i>&nbsp;	}</b>
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;	String retrievePieceToCalculateFromFile() throws Exception
+<i>83</i>&nbsp;	{
+<b class="fc"><i>84</i>&nbsp;		String[] requestLine = fileLineArray.get(2).split(&quot; &quot;);</b>
+<i>85</i>&nbsp;
+<b class="fc"><i>86</i>&nbsp;		if(!(requestLine[0].equals(&quot;PIECE&quot;) &amp;&amp; requestLine[1].equals(&quot;TO&quot;) &amp;&amp; requestLine[2].equals(&quot;MOVE:&quot;)))</b>
+<i>87</i>&nbsp;		{
+<b class="fc"><i>88</i>&nbsp;			throw new Exception(&quot;Incorrect format of file in third line&quot;);</b>
+<i>89</i>&nbsp;		}
+<i>90</i>&nbsp;
+<b class="fc"><i>91</i>&nbsp;		return requestLine[3];</b>
+<i>92</i>&nbsp;	}
+<i>93</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-08-22 04:10</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FileInterpreterTest</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">&lt;empty package name&gt;</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FileInterpreterTest (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FileInterpreterTest</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    77.4%
+  </span>
+  <span class="absValue">
+    (48/ 62)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;import static org.junit.jupiter.api.Assertions.*;
+<i>2</i>&nbsp;
+<b class="fc"><i>3</i>&nbsp;class FileInterpreterTest {</b>
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;    @org.junit.jupiter.api.Test
+<i>6</i>&nbsp;    void constructBoardFromFile()
+<i>7</i>&nbsp;    {
+<b class="fc"><i>8</i>&nbsp;        ChessBoard board = new ChessBoard();</b>
+<i>9</i>&nbsp;        try {
+<b class="fc"><i>10</i>&nbsp;            FileInterpreter interpreter = new FileInterpreter(&quot;src/FileInterpreterTestFile.txt&quot;);</b>
+<b class="fc"><i>11</i>&nbsp;            board = interpreter.constructBoardFromFile();</b>
+<i>12</i>&nbsp;        }
+<b class="nc"><i>13</i>&nbsp;        catch(Exception x)</b>
+<i>14</i>&nbsp;        {
+<b class="nc"><i>15</i>&nbsp;            fail(&quot;Exception triggered: &quot; + x.getMessage());</b>
+<b class="fc"><i>16</i>&nbsp;        }</b>
+<i>17</i>&nbsp;
+<b class="fc"><i>18</i>&nbsp;        boolean boardCorrect =</b>
+<b class="fc"><i>19</i>&nbsp;                &quot;WR&quot;.equals(board.getPieceAtCoord(5,0)) &amp;&amp;</b>
+<b class="fc"><i>20</i>&nbsp;                &quot;WK&quot;.equals(board.getPieceAtCoord(6,0)) &amp;&amp;</b>
+<b class="fc"><i>21</i>&nbsp;                &quot;WP&quot;.equals(board.getPieceAtCoord(5,1)) &amp;&amp;</b>
+<b class="fc"><i>22</i>&nbsp;                &quot;WP&quot;.equals(board.getPieceAtCoord(7,1)) &amp;&amp;</b>
+<b class="fc"><i>23</i>&nbsp;                &quot;WP&quot;.equals(board.getPieceAtCoord(6,2)) &amp;&amp;</b>
+<b class="fc"><i>24</i>&nbsp;                &quot;BK&quot;.equals(board.getPieceAtCoord(1,7)) &amp;&amp;</b>
+<b class="fc"><i>25</i>&nbsp;                &quot;BN&quot;.equals(board.getPieceAtCoord(4,7)) &amp;&amp;</b>
+<b class="fc"><i>26</i>&nbsp;                &quot;BP&quot;.equals(board.getPieceAtCoord(0,6)) &amp;&amp;</b>
+<b class="fc"><i>27</i>&nbsp;                &quot;BP&quot;.equals(board.getPieceAtCoord(1,6)) &amp;&amp;</b>
+<b class="fc"><i>28</i>&nbsp;                &quot;BP&quot;.equals(board.getPieceAtCoord(2,6)) &amp;&amp;</b>
+<b class="fc"><i>29</i>&nbsp;                &quot;BR&quot;.equals(board.getPieceAtCoord(0,4));</b>
+<i>30</i>&nbsp;
+<b class="fc"><i>31</i>&nbsp;        assertTrue(boardCorrect);</b>
+<b class="fc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;     @org.junit.jupiter.api.Test
+<i>35</i>&nbsp;    void retrievePieceToCalculateForFromFile()
+<i>36</i>&nbsp;    {
+<b class="fc"><i>37</i>&nbsp;        String pieceToCalculate = &quot;&quot;;</b>
+<i>38</i>&nbsp;        try {
+<b class="fc"><i>39</i>&nbsp;            FileInterpreter interpreter = new FileInterpreter(&quot;src/FileInterpreterTestFile.txt&quot;);</b>
+<b class="fc"><i>40</i>&nbsp;            pieceToCalculate = interpreter.retrievePieceToCalculateFromFile();</b>
+<i>41</i>&nbsp;        }
+<b class="nc"><i>42</i>&nbsp;        catch(Exception x)</b>
+<i>43</i>&nbsp;        {
+<b class="nc"><i>44</i>&nbsp;            fail(&quot;Exception triggered: &quot; + x.getMessage());</b>
+<b class="fc"><i>45</i>&nbsp;        }</b>
+<i>46</i>&nbsp;
+<b class="fc"><i>47</i>&nbsp;        assertEquals(&quot;Rf1&quot;, pieceToCalculate);</b>
+<b class="fc"><i>48</i>&nbsp;    }</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    @org.junit.jupiter.api.Test
+<i>51</i>&nbsp;    void checkFileValid()
+<i>52</i>&nbsp;    {
+<i>53</i>&nbsp;        try{
+<b class="fc"><i>54</i>&nbsp;            FileInterpreter interpreter = new FileInterpreter(&quot;asdf&quot;);</b>
+<b class="nc"><i>55</i>&nbsp;            fail(&quot;Failed to trigger exception&quot;);</b>
+<i>56</i>&nbsp;        }
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;        catch(Exception x)</b>
+<i>59</i>&nbsp;        {
+<b class="fc"><i>60</i>&nbsp;            assertEquals(&quot;Could not load specified file&quot;, x.getMessage());</b>
+<b class="nc"><i>61</i>&nbsp;        }</b>
+<b class="fc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    @org.junit.jupiter.api.Test
+<i>65</i>&nbsp;    void checkFileCorrectNumberLines()
+<i>66</i>&nbsp;    {
+<i>67</i>&nbsp;        try{
+<b class="fc"><i>68</i>&nbsp;            FileInterpreter interpreter = new FileInterpreter(&quot;src/FileInterpreterTestFileNoLines.txt&quot;);</b>
+<b class="nc"><i>69</i>&nbsp;            fail(&quot;Failed to trigger exception&quot;);</b>
+<i>70</i>&nbsp;        }
+<i>71</i>&nbsp;
+<b class="fc"><i>72</i>&nbsp;        catch(Exception x)</b>
+<i>73</i>&nbsp;        {
+<b class="fc"><i>74</i>&nbsp;            assertEquals(&quot;Incorrect Number of Lines in the File&quot;, x.getMessage());</b>
+<b class="nc"><i>75</i>&nbsp;        }</b>
+<b class="fc"><i>76</i>&nbsp;    }</b>
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    @org.junit.jupiter.api.Test
+<i>79</i>&nbsp;    void checkFileCorrectFirstLine()
+<i>80</i>&nbsp;    {
+<i>81</i>&nbsp;        try{
+<b class="fc"><i>82</i>&nbsp;            FileInterpreter interpreter = new FileInterpreter(&quot;src/FileInterpreterTestFileBadFormatFirstLine.txt&quot;);</b>
+<b class="fc"><i>83</i>&nbsp;            interpreter.constructBoardFromFile();</b>
+<b class="nc"><i>84</i>&nbsp;            fail(&quot;Failed to trigger exception&quot;);</b>
+<i>85</i>&nbsp;        }
+<i>86</i>&nbsp;
+<b class="fc"><i>87</i>&nbsp;        catch(Exception x)</b>
+<i>88</i>&nbsp;        {
+<b class="fc"><i>89</i>&nbsp;            assertEquals(&quot;Incorrect format of file in first line&quot;, x.getMessage());</b>
+<b class="nc"><i>90</i>&nbsp;        }</b>
+<b class="fc"><i>91</i>&nbsp;    }</b>
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;    @org.junit.jupiter.api.Test
+<i>94</i>&nbsp;    void checkFileCorrectSecondLine()
+<i>95</i>&nbsp;    {
+<i>96</i>&nbsp;        try{
+<b class="fc"><i>97</i>&nbsp;            FileInterpreter interpreter = new FileInterpreter(&quot;src/FileInterpreterTestFileBadFormatSecondLine.txt&quot;);</b>
+<b class="fc"><i>98</i>&nbsp;            interpreter.constructBoardFromFile();</b>
+<b class="nc"><i>99</i>&nbsp;            fail(&quot;Failed to trigger exception&quot;);</b>
+<i>100</i>&nbsp;        }
+<i>101</i>&nbsp;
+<b class="fc"><i>102</i>&nbsp;        catch(Exception x)</b>
+<i>103</i>&nbsp;        {
+<b class="fc"><i>104</i>&nbsp;            assertEquals(&quot;Incorrect format of file in second line&quot;, x.getMessage());</b>
+<b class="nc"><i>105</i>&nbsp;        }</b>
+<b class="fc"><i>106</i>&nbsp;    }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;    @org.junit.jupiter.api.Test
+<i>109</i>&nbsp;    void checkFileCorrectThirdLine()
+<i>110</i>&nbsp;    {
+<i>111</i>&nbsp;        try{
+<b class="fc"><i>112</i>&nbsp;            FileInterpreter interpreter = new FileInterpreter(&quot;src/FileInterpreterTestFileBadFormatThirdLine.txt&quot;);</b>
+<b class="fc"><i>113</i>&nbsp;            interpreter.retrievePieceToCalculateFromFile();</b>
+<b class="nc"><i>114</i>&nbsp;            fail(&quot;Failed to trigger exception&quot;);</b>
+<i>115</i>&nbsp;        }
+<i>116</i>&nbsp;
+<b class="fc"><i>117</i>&nbsp;        catch(Exception x)</b>
+<i>118</i>&nbsp;        {
+<b class="fc"><i>119</i>&nbsp;            assertEquals(&quot;Incorrect format of file in third line&quot;, x.getMessage());</b>
+<b class="nc"><i>120</i>&nbsp;        }</b>
+<b class="fc"><i>121</i>&nbsp;    }</b>
+<i>122</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-08-22 04:10</div>
+</div>
+</body>
+</html>

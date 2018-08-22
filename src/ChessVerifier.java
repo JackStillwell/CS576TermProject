@@ -314,19 +314,20 @@ public class ChessVerifier {
             // enemy pieces
             else
             {
+                // if the space directly in front is open or capture is available on either side
                 if(col + 1 < 8 && board.getPieceAtCoord(row, col + 1).equals("x"))
                 {
                     availableMoves.add(board.getLocationCodeFromCoordinates(row, col + 1));
+                }
 
-                    if(row + 1 < 8 && board.getPieceAtCoord(row + 1, col + 1).charAt(0) == 'B')
-                    {
-                        availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col + 1));
-                    }
+                if(col + 1 < 8 && row + 1 < 8 && board.getPieceAtCoord(row + 1, col + 1).charAt(0) == 'B')
+                {
+                    availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col + 1));
+                }
 
-                    if(row - 1 >= 0 && board.getPieceAtCoord(row - 1, col + 1).charAt(0) == 'B')
-                    {
-                        availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col + 1));
-                    }
+                if(col + 1 < 8 && row -1 >= 0 && board.getPieceAtCoord(row - 1, col + 1).charAt(0) == 'B')
+                {
+                    availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col + 1));
                 }
             }
         }
@@ -354,16 +355,16 @@ public class ChessVerifier {
                 if(col - 1 >= 0 && board.getPieceAtCoord(row, col - 1).equals("x"))
                 {
                     availableMoves.add(board.getLocationCodeFromCoordinates(row, col - 1));
+                }
 
-                    if(row + 1 < 8 && board.getPieceAtCoord(row + 1, col - 1).charAt(0) == 'W')
-                    {
-                        availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col - 1));
-                    }
+                if(col - 1 >= 0 && row + 1 < 8 && board.getPieceAtCoord(row + 1, col - 1).charAt(0) == 'W')
+                {
+                    availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col - 1));
+                }
 
-                    if(row - 1 >= 0 && board.getPieceAtCoord(row - 1, col - 1).charAt(0) == 'W')
-                    {
-                        availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col - 1));
-                    }
+                if(col - 1 >= 0 && row - 1 >= 0 && board.getPieceAtCoord(row - 1, col - 1).charAt(0) == 'W')
+                {
+                    availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col - 1));
                 }
             }
         }
@@ -523,21 +524,21 @@ public class ChessVerifier {
         ArrayList<String> kingMoves = new ArrayList<>();
 
         // all 8 possible movements
-        if(board.getPieceAtCoord(i, j+1).charAt(0) != sideColor)
+        if(j+1 < 8 && board.getPieceAtCoord(i, j+1).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i, j+1));
-        if(board.getPieceAtCoord(i, j-1).charAt(0) != sideColor)
+        if(j-1 >= 0 && board.getPieceAtCoord(i, j-1).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i, j-1));
-        if(board.getPieceAtCoord(i+1, j).charAt(0) != sideColor)
+        if(i+1 < 8 && board.getPieceAtCoord(i+1, j).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j));
-        if(board.getPieceAtCoord(i-1, j).charAt(0) != sideColor)
+        if(i-1 >=0 && board.getPieceAtCoord(i-1, j).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j));
-        if(board.getPieceAtCoord(i+1, j+1).charAt(0) != sideColor)
+        if(i+1 <8 && j+1 < 8 && board.getPieceAtCoord(i+1, j+1).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j+1));
-        if(board.getPieceAtCoord(i+1, j-1).charAt(0) != sideColor)
+        if(i+1 < 8 && j-1 >= 0 && board.getPieceAtCoord(i+1, j-1).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j-1));
-        if(board.getPieceAtCoord(i-1, j+1).charAt(0) != sideColor)
+        if(i-1 >= 0 && j+1 < 8 && board.getPieceAtCoord(i-1, j+1).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j+1));
-        if(board.getPieceAtCoord(i-1, j-1).charAt(0) != sideColor)
+        if(i-1 >= 0 && j-1 >= 0 && board.getPieceAtCoord(i-1, j-1).charAt(0) != sideColor)
             kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j-1));
 
         return kingMoves;
@@ -565,6 +566,10 @@ public class ChessVerifier {
                         if(availableMoves.contains(locationCode))
                             return true;
                     }
+
+                    // this ensures that having two kings on the board doesn't
+                    // result in an endless loop, using a "simple" king move
+                    // calculation
                     if (board.getPieceAtCoord(i, j).charAt(0) == oppositeColor &&
                             board.getPieceAtCoord(i, j).charAt(1) == 'K')
                     {

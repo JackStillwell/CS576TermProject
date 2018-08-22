@@ -1,0 +1,3 @@
+WHITE: Pe2, Pa3, Bh3, Pb4, Ne4, Nc7, Kf7, Qf8
+BLACK: Pc3, Pd3, Ka4, Nd4, Pg4, Bf5, Pb6, Nd7
+PIECE TO MOVE: Kf7

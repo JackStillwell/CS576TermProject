@@ -1,0 +1,3 @@
+WHITE: Rb1, Ke1, Bh1, Pc2, Pf3, Ph3, Ba5, Pc5, Qe5, Nb6, Nc6, Pd6, Pe6, Pf6, Pg7, Ra8
+BLACK: Na1, Pf2, Pa3, Kd3, Pg3, Bc4, Ph4, Qb5, Rd5, Nf5, Pa6, Rg6, Bc7, Pe7, Pf7, Ph7
+PIECE TO MOVE: Kd3

@@ -61,30 +61,40 @@ class ChessVerifierTest {
     @org.junit.jupiter.api.Test
     void randomBoardTestOne()
     {
+        ChessVerifier cv = new ChessVerifier();
 
+        assertEquals("LEGAL MOVES FOR Kf7: g7, e7, g8, e8", cv.testMain("src/ChessVerifierTestFileRandomOne.txt"));
     }
 
     @org.junit.jupiter.api.Test
     void randomBoardTestTwo()
     {
+        ChessVerifier cv = new ChessVerifier();
 
+        assertEquals("LEGAL MOVES FOR Kg3: g4, f3, h2, f4, f2", cv.testMain("src/ChessVerifierTestFileRandomTwo.txt"));
     }
 
     @org.junit.jupiter.api.Test
     void randomBoardTestThree()
     {
+        ChessVerifier cv = new ChessVerifier();
 
+        assertEquals("LEGAL MOVES FOR Ke5: e6, f6, d6", cv.testMain("src/ChessVerifierTestFileRandomThree.txt"));
     }
 
     @org.junit.jupiter.api.Test
     void randomBoardTestFour()
     {
+        ChessVerifier cv = new ChessVerifier();
 
+        assertEquals("LEGAL MOVES FOR Kd3: c2", cv.testMain("src/ChessVerifierTestFileRandomFour.txt"));
     }
 
     @org.junit.jupiter.api.Test
     void randomBoardTestFive()
     {
+        ChessVerifier cv = new ChessVerifier();
 
+        assertEquals("LEGAL MOVES FOR Ke4: f3", cv.testMain("src/ChessVerifierTestFileRandomFive.txt"));
     }
 }

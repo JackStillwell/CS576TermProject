@@ -152,6 +152,7 @@ class ChessBoardTest {
 
         try{
             invalidCoordConversion = board.getCoordCharFromCoordNum(8);
+            fail("Exception not triggered.");
         }
         catch(Exception x)
         {
@@ -168,6 +169,7 @@ class ChessBoardTest {
 
         try{
             invalidCoordConversion = board.getCoordNumFromCoordChar('x');
+            fail("Exception not triggered.");
         }
         catch(Exception x)
         {

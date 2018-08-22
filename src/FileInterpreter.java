@@ -6,11 +6,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class FileInterpreter {
+class FileInterpreter {
 
 	private ArrayList<String> fileLineArray;
 
-	public FileInterpreter(String filepathString) throws Exception {
+	FileInterpreter(String filepathString) throws Exception {
 		Charset charset = Charset.forName("UTF-8");
 		BufferedReader reader;
 		try
@@ -41,7 +41,7 @@ public class FileInterpreter {
 		}
 	}
 
-	public ChessBoard constructBoardFromFile() throws Exception
+	ChessBoard constructBoardFromFile() throws Exception
 	{
 		ChessBoard board = new ChessBoard();
 
@@ -79,7 +79,7 @@ public class FileInterpreter {
 		}
 	}
 
-	public String retrievePieceToCalculateFromFile() throws Exception
+	String retrievePieceToCalculateFromFile() throws Exception
 	{
 		String[] requestLine = fileLineArray.get(2).split(" ");
 
