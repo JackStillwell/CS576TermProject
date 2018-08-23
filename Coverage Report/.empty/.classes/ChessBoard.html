@@ -50,18 +50,18 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    91.7%
+    100%
   </span>
   <span class="absValue">
-    (11/ 12)
+    (11/ 11)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    97.8%
+    98.9%
   </span>
   <span class="absValue">
-    (89/ 91)
+    (88/ 89)
   </span>
 </td>
 </tr>
@@ -303,42 +303,42 @@
 <i>229</i>&nbsp;
 <i>230</i>&nbsp;    String[][] getRawBoardArray()
 <i>231</i>&nbsp;    {
-<b class="nc"><i>232</i>&nbsp;</b>
+<i>232</i>&nbsp;
 <i>233</i>&nbsp;        // manually ensure a copy of the board is returned rather than a
 <i>234</i>&nbsp;        // memory reference
 <i>235</i>&nbsp;
-<i>236</i>&nbsp;        String[][] copy_of_board = new String[8][8];
+<b class="fc"><i>236</i>&nbsp;        String[][] copy_of_board = new String[8][8];</b>
 <i>237</i>&nbsp;
-<i>238</i>&nbsp;        for(int i = 0; i &lt; 8; i++)
+<b class="fc"><i>238</i>&nbsp;        for(int i = 0; i &lt; 8; i++)</b>
 <i>239</i>&nbsp;        {
-<i>240</i>&nbsp;            System.arraycopy(board[i], 0, copy_of_board[i], 0, 8);
-<b class="fc"><i>241</i>&nbsp;        }</b>
+<b class="fc"><i>240</i>&nbsp;            System.arraycopy(board[i], 0, copy_of_board[i], 0, 8);</b>
+<i>241</i>&nbsp;        }
 <i>242</i>&nbsp;
 <b class="fc"><i>243</i>&nbsp;        return copy_of_board;</b>
 <i>244</i>&nbsp;    }
-<b class="fc"><i>245</i>&nbsp;</b>
+<i>245</i>&nbsp;
 <i>246</i>&nbsp;    int[] getCoordsOfPiece(String pieceCode) throws Exception
-<b class="fc"><i>247</i>&nbsp;    {</b>
-<i>248</i>&nbsp;        for(int i = 0; i &lt; 8; i++)
+<i>247</i>&nbsp;    {
+<b class="fc"><i>248</i>&nbsp;        for(int i = 0; i &lt; 8; i++)</b>
 <i>249</i>&nbsp;        {
-<i>250</i>&nbsp;            for(int j = 0; j &lt; 8; j++)
-<b class="fc"><i>251</i>&nbsp;            {</b>
-<i>252</i>&nbsp;                if(board[i][j].equals(pieceCode))
+<b class="fc"><i>250</i>&nbsp;            for(int j = 0; j &lt; 8; j++)</b>
+<i>251</i>&nbsp;            {
+<b class="fc"><i>252</i>&nbsp;                if(board[i][j].equals(pieceCode))</b>
 <i>253</i>&nbsp;                {
-<i>254</i>&nbsp;                    return new int[] {i,j};
+<b class="fc"><i>254</i>&nbsp;                    return new int[] {i,j};</b>
 <i>255</i>&nbsp;                }
-<b class="fc"><i>256</i>&nbsp;            }</b>
+<i>256</i>&nbsp;            }
 <i>257</i>&nbsp;        }
-<b class="fc"><i>258</i>&nbsp;</b>
-<i>259</i>&nbsp;        throw new Exception(&quot;Piece Not Found: &quot; + pieceCode);
-<b class="fc"><i>260</i>&nbsp;    }</b>
+<i>258</i>&nbsp;
+<b class="nc"><i>259</i>&nbsp;        throw new Exception(&quot;Piece Not Found: &quot; + pieceCode);</b>
+<i>260</i>&nbsp;    }
 <i>261</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-08-22 04:10</div>
+    <div style="float:right;">generated on 2018-08-22 20:01</div>
 </div>
 </body>
 </html>

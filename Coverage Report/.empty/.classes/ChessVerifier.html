@@ -50,18 +50,18 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    92.3%
+    100%
   </span>
   <span class="absValue">
-    (12/ 13)
+    (12/ 12)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    96.4%
+    96.8%
   </span>
   <span class="absValue">
-    (215/ 223)
+    (215/ 222)
   </span>
 </td>
 </tr>
@@ -84,598 +84,593 @@
 <i>10</i>&nbsp;
 <b class="fc"><i>11</i>&nbsp;public class ChessVerifier {</b>
 <i>12</i>&nbsp;
-<i>13</i>&nbsp;    public static void main(String[] args)
+<i>13</i>&nbsp;    String testMain(String inputFileName)
 <i>14</i>&nbsp;    {
-<i>15</i>&nbsp;
-<b class="nc"><i>16</i>&nbsp;    }</b>
-<i>17</i>&nbsp;
-<i>18</i>&nbsp;    String testMain(String inputFileName)
-<i>19</i>&nbsp;    {
-<i>20</i>&nbsp;        try {
-<b class="fc"><i>21</i>&nbsp;            FileInterpreter fi = new FileInterpreter(inputFileName);</b>
-<b class="fc"><i>22</i>&nbsp;            ChessBoard board = fi.constructBoardFromFile();</b>
-<b class="fc"><i>23</i>&nbsp;            String piece = fi.retrievePieceToCalculateFromFile();</b>
-<b class="fc"><i>24</i>&nbsp;            String pieceLocation = piece.substring(1);</b>
+<i>15</i>&nbsp;        try {
+<b class="fc"><i>16</i>&nbsp;            FileInterpreter fi = new FileInterpreter(inputFileName);</b>
+<b class="fc"><i>17</i>&nbsp;            ChessBoard board = fi.constructBoardFromFile();</b>
+<b class="fc"><i>18</i>&nbsp;            String piece = fi.retrievePieceToCalculateFromFile();</b>
+<b class="fc"><i>19</i>&nbsp;            String pieceLocation = piece.substring(1);</b>
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;            ArrayList&lt;String&gt; availableMoves = getAvailableMoves(pieceLocation, board);</b>
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;            StringBuilder returnStringBuilder = new StringBuilder();</b>
+<b class="fc"><i>24</i>&nbsp;            returnStringBuilder.append(&quot;LEGAL MOVES FOR &quot;).append(piece).append(&quot;:&quot;);</b>
 <i>25</i>&nbsp;
-<b class="fc"><i>26</i>&nbsp;            ArrayList&lt;String&gt; availableMoves = getAvailableMoves(pieceLocation, board);</b>
-<i>27</i>&nbsp;
-<b class="fc"><i>28</i>&nbsp;            StringBuilder returnStringBuilder = new StringBuilder();</b>
-<b class="fc"><i>29</i>&nbsp;            returnStringBuilder.append(&quot;LEGAL MOVES FOR &quot;).append(piece).append(&quot;:&quot;);</b>
+<b class="fc"><i>26</i>&nbsp;            for(String s : availableMoves)</b>
+<i>27</i>&nbsp;            {
+<b class="fc"><i>28</i>&nbsp;                returnStringBuilder.append(&quot; &quot;).append(s).append(&quot;,&quot;);</b>
+<b class="fc"><i>29</i>&nbsp;            }</b>
 <i>30</i>&nbsp;
-<b class="fc"><i>31</i>&nbsp;            for(String s : availableMoves)</b>
-<i>32</i>&nbsp;            {
-<b class="fc"><i>33</i>&nbsp;                returnStringBuilder.append(&quot; &quot;).append(s).append(&quot;,&quot;);</b>
-<b class="fc"><i>34</i>&nbsp;            }</b>
-<i>35</i>&nbsp;
-<b class="fc"><i>36</i>&nbsp;            returnStringBuilder.deleteCharAt(returnStringBuilder.lastIndexOf(&quot;,&quot;));</b>
-<i>37</i>&nbsp;
-<b class="fc"><i>38</i>&nbsp;            return returnStringBuilder.toString();</b>
-<i>39</i>&nbsp;        }
-<b class="nc"><i>40</i>&nbsp;        catch(Exception x)</b>
-<i>41</i>&nbsp;        {
-<b class="nc"><i>42</i>&nbsp;            return &quot;ERROR: &quot; + x.getMessage();</b>
-<i>43</i>&nbsp;        }
-<i>44</i>&nbsp;    }
+<b class="fc"><i>31</i>&nbsp;            returnStringBuilder.deleteCharAt(returnStringBuilder.lastIndexOf(&quot;,&quot;));</b>
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;            return returnStringBuilder.toString();</b>
+<i>34</i>&nbsp;        }
+<b class="nc"><i>35</i>&nbsp;        catch(Exception x)</b>
+<i>36</i>&nbsp;        {
+<b class="nc"><i>37</i>&nbsp;            return &quot;ERROR: &quot; + x.getMessage();</b>
+<i>38</i>&nbsp;        }
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    private ArrayList&lt;String&gt; getAvailableMoves(String pieceLocation, ChessBoard board) throws Exception {
+<i>42</i>&nbsp;
+<b class="fc"><i>43</i>&nbsp;        int[] pieceCoordinates = board.getCoordinatesFromLocationCode(pieceLocation);</b>
+<b class="fc"><i>44</i>&nbsp;        String pieceCode = board.getPieceAtCoord(pieceCoordinates[0], pieceCoordinates[1]);</b>
 <i>45</i>&nbsp;
-<i>46</i>&nbsp;    private ArrayList&lt;String&gt; getAvailableMoves(String pieceLocation, ChessBoard board) throws Exception {
+<b class="fc"><i>46</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
 <i>47</i>&nbsp;
-<b class="fc"><i>48</i>&nbsp;        int[] pieceCoordinates = board.getCoordinatesFromLocationCode(pieceLocation);</b>
-<b class="fc"><i>49</i>&nbsp;        String pieceCode = board.getPieceAtCoord(pieceCoordinates[0], pieceCoordinates[1]);</b>
-<i>50</i>&nbsp;
-<b class="fc"><i>51</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
-<i>52</i>&nbsp;
-<i>53</i>&nbsp;        // First, branch by piece type
-<b class="fc"><i>54</i>&nbsp;        if(pieceCode.endsWith(&quot;K&quot;))</b>
-<i>55</i>&nbsp;        {
-<i>56</i>&nbsp;            // move one in any unoccupied direction, as long as there are no
-<i>57</i>&nbsp;            // enemy pieces which could capture following that move
-<i>58</i>&nbsp;
-<i>59</i>&nbsp;            // new plan -- execute all possible moves for the king and
-<i>60</i>&nbsp;            // use those new boards to calculate if the king would be
-<i>61</i>&nbsp;            // in danger, if so remove that option
+<i>48</i>&nbsp;        // First, branch by piece type
+<b class="fc"><i>49</i>&nbsp;        if(pieceCode.endsWith(&quot;K&quot;))</b>
+<i>50</i>&nbsp;        {
+<i>51</i>&nbsp;            // move one in any unoccupied direction, as long as there are no
+<i>52</i>&nbsp;            // enemy pieces which could capture following that move
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;            // new plan -- execute all possible moves for the king and
+<i>55</i>&nbsp;            // use those new boards to calculate if the king would be
+<i>56</i>&nbsp;            // in danger, if so remove that option
+<i>57</i>&nbsp;
+<b class="fc"><i>58</i>&nbsp;            char oppositeSide = &#39;B&#39;;</b>
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;            if(pieceCode.startsWith(&quot;B&quot;))</b>
+<b class="fc"><i>61</i>&nbsp;                oppositeSide = &#39;W&#39;;</b>
 <i>62</i>&nbsp;
-<b class="fc"><i>63</i>&nbsp;            char oppositeSide = &#39;B&#39;;</b>
+<i>63</i>&nbsp;            // Step 1: Calculate Possible Moves
 <i>64</i>&nbsp;
-<b class="fc"><i>65</i>&nbsp;            if(pieceCode.startsWith(&quot;B&quot;))</b>
-<b class="fc"><i>66</i>&nbsp;                oppositeSide = &#39;W&#39;;</b>
-<i>67</i>&nbsp;
-<i>68</i>&nbsp;            // Step 1: Calculate Possible Moves
-<i>69</i>&nbsp;
-<b class="fc"><i>70</i>&nbsp;            ArrayList&lt;String&gt; possibleMoves = getKingMoves(pieceCoordinates[0], pieceCoordinates[1], board, pieceCode.charAt(0));</b>
-<i>71</i>&nbsp;
-<i>72</i>&nbsp;            // Step 2: Use those moves to build all possible boards after the move
-<i>73</i>&nbsp;
-<b class="fc"><i>74</i>&nbsp;            ArrayList&lt;ChessBoard&gt; possibleBoards = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>65</i>&nbsp;            ArrayList&lt;String&gt; possibleMoves = getKingMoves(pieceCoordinates[0], pieceCoordinates[1], board, pieceCode.charAt(0));</b>
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;            // Step 2: Use those moves to build all possible boards after the move
+<i>68</i>&nbsp;
+<b class="fc"><i>69</i>&nbsp;            ArrayList&lt;ChessBoard&gt; possibleBoards = new ArrayList&lt;&gt;();</b>
+<i>70</i>&nbsp;
+<b class="fc"><i>71</i>&nbsp;            for(String locationCode : possibleMoves)</b>
+<i>72</i>&nbsp;            {
+<b class="fc"><i>73</i>&nbsp;                String[][] rawBoard = board.getRawBoardArray();</b>
+<b class="fc"><i>74</i>&nbsp;                int[] coords = board.getCoordinatesFromLocationCode(locationCode);</b>
 <i>75</i>&nbsp;
-<b class="fc"><i>76</i>&nbsp;            for(String locationCode : possibleMoves)</b>
-<i>77</i>&nbsp;            {
-<b class="fc"><i>78</i>&nbsp;                String[][] rawBoard = board.getRawBoardArray();</b>
-<b class="fc"><i>79</i>&nbsp;                int[] coords = board.getCoordinatesFromLocationCode(locationCode);</b>
-<i>80</i>&nbsp;
-<i>81</i>&nbsp;                // put the king in the possible position
-<b class="fc"><i>82</i>&nbsp;                rawBoard[coords[0]][coords[1]] = pieceCode;</b>
-<i>83</i>&nbsp;
-<i>84</i>&nbsp;                // fill in the space left behind
-<b class="fc"><i>85</i>&nbsp;                rawBoard[pieceCoordinates[0]][pieceCoordinates[1]] = &quot;x&quot;;</b>
-<i>86</i>&nbsp;
-<b class="fc"><i>87</i>&nbsp;                possibleBoards.add(new ChessBoard(rawBoard));</b>
-<b class="fc"><i>88</i>&nbsp;            }</b>
+<i>76</i>&nbsp;                // put the king in the possible position
+<b class="fc"><i>77</i>&nbsp;                rawBoard[coords[0]][coords[1]] = pieceCode;</b>
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;                // fill in the space left behind
+<b class="fc"><i>80</i>&nbsp;                rawBoard[pieceCoordinates[0]][pieceCoordinates[1]] = &quot;x&quot;;</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;                possibleBoards.add(new ChessBoard(rawBoard));</b>
+<b class="fc"><i>83</i>&nbsp;            }</b>
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;            // Step 3: ensure the king is not in danger in any
+<i>86</i>&nbsp;            // of the possible boards, if it is, remove that board
+<i>87</i>&nbsp;
+<b class="fc"><i>88</i>&nbsp;            possibleBoards.removeIf(predicateIsPieceInDanger(pieceCode, oppositeSide));</b>
 <i>89</i>&nbsp;
-<i>90</i>&nbsp;            // Step 3: ensure the king is not in danger in any
-<i>91</i>&nbsp;            // of the possible boards, if it is, remove that board
+<i>90</i>&nbsp;            // Step 4: find the locations of the king in the surviving boards
+<i>91</i>&nbsp;            // and add those locations to availableMoves
 <i>92</i>&nbsp;
-<b class="fc"><i>93</i>&nbsp;            possibleBoards.removeIf(predicateIsPieceInDanger(pieceCode, oppositeSide));</b>
-<i>94</i>&nbsp;
-<i>95</i>&nbsp;            // Step 4: find the locations of the king in the surviving boards
-<i>96</i>&nbsp;            // and add those locations to availableMoves
-<i>97</i>&nbsp;
-<b class="fc"><i>98</i>&nbsp;            for( ChessBoard possibleBoard : possibleBoards)</b>
-<i>99</i>&nbsp;            {
-<b class="fc"><i>100</i>&nbsp;                int[] kingCoords = possibleBoard.getCoordsOfPiece(pieceCode);</b>
-<i>101</i>&nbsp;
-<b class="fc"><i>102</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(kingCoords[0],kingCoords[1]));</b>
-<b class="fc"><i>103</i>&nbsp;            }</b>
-<i>104</i>&nbsp;
-<b class="fc"><i>105</i>&nbsp;            return availableMoves;</b>
-<i>106</i>&nbsp;        }
-<i>107</i>&nbsp;
-<b class="fc"><i>108</i>&nbsp;        else if(pieceCode.endsWith(&quot;Q&quot;))</b>
-<i>109</i>&nbsp;        {
-<i>110</i>&nbsp;            // can move in any direction, ending in an occupied space
-<b class="fc"><i>111</i>&nbsp;            ArrayList&lt;String&gt; diagMoves = getDiagonalLineMovement(</b>
-<i>112</i>&nbsp;                    pieceCoordinates[0],
-<i>113</i>&nbsp;                    pieceCoordinates[1],
-<i>114</i>&nbsp;                    board,
-<b class="fc"><i>115</i>&nbsp;                    pieceCode.charAt(0));</b>
-<i>116</i>&nbsp;
-<b class="fc"><i>117</i>&nbsp;            ArrayList&lt;String&gt; straightMoves = getStraightLineMovement(</b>
-<i>118</i>&nbsp;                    pieceCoordinates[0],
-<i>119</i>&nbsp;                    pieceCoordinates[1],
-<i>120</i>&nbsp;                    board,
-<b class="fc"><i>121</i>&nbsp;                    pieceCode.charAt(0));</b>
-<i>122</i>&nbsp;
-<b class="fc"><i>123</i>&nbsp;            availableMoves.addAll(diagMoves);</b>
-<b class="fc"><i>124</i>&nbsp;            availableMoves.addAll(straightMoves);</b>
-<i>125</i>&nbsp;
-<b class="fc"><i>126</i>&nbsp;            return availableMoves;</b>
-<i>127</i>&nbsp;        }
-<i>128</i>&nbsp;
-<b class="fc"><i>129</i>&nbsp;        else if(pieceCode.endsWith(&quot;N&quot;))</b>
-<i>130</i>&nbsp;        {
-<b class="fc"><i>131</i>&nbsp;            return getKnightMovement(</b>
-<i>132</i>&nbsp;                    pieceCoordinates[0],
-<i>133</i>&nbsp;                    pieceCoordinates[1],
-<i>134</i>&nbsp;                    board,
-<b class="fc"><i>135</i>&nbsp;                    pieceCode.charAt(0));</b>
-<i>136</i>&nbsp;        }
-<i>137</i>&nbsp;
-<b class="fc"><i>138</i>&nbsp;        else if(pieceCode.endsWith(&quot;B&quot;))</b>
-<i>139</i>&nbsp;        {
-<i>140</i>&nbsp;            // bishop -- diagonals
-<b class="fc"><i>141</i>&nbsp;            return getDiagonalLineMovement(</b>
-<i>142</i>&nbsp;                    pieceCoordinates[0],
-<i>143</i>&nbsp;                    pieceCoordinates[1],
-<i>144</i>&nbsp;                    board,
-<b class="fc"><i>145</i>&nbsp;                    pieceCode.charAt(0));</b>
-<i>146</i>&nbsp;        }
-<i>147</i>&nbsp;
-<b class="fc"><i>148</i>&nbsp;        else if(pieceCode.endsWith(&quot;R&quot;))</b>
-<i>149</i>&nbsp;        {
-<i>150</i>&nbsp;            // rook -- just up and down
-<b class="fc"><i>151</i>&nbsp;            return getStraightLineMovement(</b>
-<i>152</i>&nbsp;                    pieceCoordinates[0],
-<i>153</i>&nbsp;                    pieceCoordinates[1],
-<i>154</i>&nbsp;                    board,
-<b class="fc"><i>155</i>&nbsp;                    pieceCode.charAt(0));</b>
-<i>156</i>&nbsp;        }
-<i>157</i>&nbsp;
-<b class="fc"><i>158</i>&nbsp;        else if(pieceCode.endsWith(&quot;P&quot;))</b>
-<i>159</i>&nbsp;        {
-<b class="fc"><i>160</i>&nbsp;            return getPawnMovement(</b>
-<i>161</i>&nbsp;                    pieceCoordinates[0],
-<i>162</i>&nbsp;                    pieceCoordinates[1],
-<i>163</i>&nbsp;                    board,
-<b class="fc"><i>164</i>&nbsp;                    pieceCode.charAt(0));</b>
+<b class="fc"><i>93</i>&nbsp;            for( ChessBoard possibleBoard : possibleBoards)</b>
+<i>94</i>&nbsp;            {
+<b class="fc"><i>95</i>&nbsp;                int[] kingCoords = possibleBoard.getCoordsOfPiece(pieceCode);</b>
+<i>96</i>&nbsp;
+<b class="fc"><i>97</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(kingCoords[0],kingCoords[1]));</b>
+<b class="fc"><i>98</i>&nbsp;            }</b>
+<i>99</i>&nbsp;
+<b class="fc"><i>100</i>&nbsp;            return availableMoves;</b>
+<i>101</i>&nbsp;        }
+<i>102</i>&nbsp;
+<b class="fc"><i>103</i>&nbsp;        else if(pieceCode.endsWith(&quot;Q&quot;))</b>
+<i>104</i>&nbsp;        {
+<i>105</i>&nbsp;            // can move in any direction, ending in an occupied space
+<b class="fc"><i>106</i>&nbsp;            ArrayList&lt;String&gt; diagMoves = getDiagonalLineMovement(</b>
+<i>107</i>&nbsp;                    pieceCoordinates[0],
+<i>108</i>&nbsp;                    pieceCoordinates[1],
+<i>109</i>&nbsp;                    board,
+<b class="fc"><i>110</i>&nbsp;                    pieceCode.charAt(0));</b>
+<i>111</i>&nbsp;
+<b class="fc"><i>112</i>&nbsp;            ArrayList&lt;String&gt; straightMoves = getStraightLineMovement(</b>
+<i>113</i>&nbsp;                    pieceCoordinates[0],
+<i>114</i>&nbsp;                    pieceCoordinates[1],
+<i>115</i>&nbsp;                    board,
+<b class="fc"><i>116</i>&nbsp;                    pieceCode.charAt(0));</b>
+<i>117</i>&nbsp;
+<b class="fc"><i>118</i>&nbsp;            availableMoves.addAll(diagMoves);</b>
+<b class="fc"><i>119</i>&nbsp;            availableMoves.addAll(straightMoves);</b>
+<i>120</i>&nbsp;
+<b class="fc"><i>121</i>&nbsp;            return availableMoves;</b>
+<i>122</i>&nbsp;        }
+<i>123</i>&nbsp;
+<b class="fc"><i>124</i>&nbsp;        else if(pieceCode.endsWith(&quot;N&quot;))</b>
+<i>125</i>&nbsp;        {
+<b class="fc"><i>126</i>&nbsp;            return getKnightMovement(</b>
+<i>127</i>&nbsp;                    pieceCoordinates[0],
+<i>128</i>&nbsp;                    pieceCoordinates[1],
+<i>129</i>&nbsp;                    board,
+<b class="fc"><i>130</i>&nbsp;                    pieceCode.charAt(0));</b>
+<i>131</i>&nbsp;        }
+<i>132</i>&nbsp;
+<b class="fc"><i>133</i>&nbsp;        else if(pieceCode.endsWith(&quot;B&quot;))</b>
+<i>134</i>&nbsp;        {
+<i>135</i>&nbsp;            // bishop -- diagonals
+<b class="fc"><i>136</i>&nbsp;            return getDiagonalLineMovement(</b>
+<i>137</i>&nbsp;                    pieceCoordinates[0],
+<i>138</i>&nbsp;                    pieceCoordinates[1],
+<i>139</i>&nbsp;                    board,
+<b class="fc"><i>140</i>&nbsp;                    pieceCode.charAt(0));</b>
+<i>141</i>&nbsp;        }
+<i>142</i>&nbsp;
+<b class="fc"><i>143</i>&nbsp;        else if(pieceCode.endsWith(&quot;R&quot;))</b>
+<i>144</i>&nbsp;        {
+<i>145</i>&nbsp;            // rook -- just up and down
+<b class="fc"><i>146</i>&nbsp;            return getStraightLineMovement(</b>
+<i>147</i>&nbsp;                    pieceCoordinates[0],
+<i>148</i>&nbsp;                    pieceCoordinates[1],
+<i>149</i>&nbsp;                    board,
+<b class="fc"><i>150</i>&nbsp;                    pieceCode.charAt(0));</b>
+<i>151</i>&nbsp;        }
+<i>152</i>&nbsp;
+<b class="fc"><i>153</i>&nbsp;        else if(pieceCode.endsWith(&quot;P&quot;))</b>
+<i>154</i>&nbsp;        {
+<b class="fc"><i>155</i>&nbsp;            return getPawnMovement(</b>
+<i>156</i>&nbsp;                    pieceCoordinates[0],
+<i>157</i>&nbsp;                    pieceCoordinates[1],
+<i>158</i>&nbsp;                    board,
+<b class="fc"><i>159</i>&nbsp;                    pieceCode.charAt(0));</b>
+<i>160</i>&nbsp;        }
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;        else
+<i>163</i>&nbsp;        {
+<b class="nc"><i>164</i>&nbsp;            throw new Exception(&quot;Unknown piece type: &quot; + pieceCode.substring(1));</b>
 <i>165</i>&nbsp;        }
-<i>166</i>&nbsp;
-<i>167</i>&nbsp;        else
-<i>168</i>&nbsp;        {
-<b class="nc"><i>169</i>&nbsp;            throw new Exception(&quot;Unknown piece type: &quot; + pieceCode.substring(1));</b>
-<i>170</i>&nbsp;        }
-<i>171</i>&nbsp;    }
-<i>172</i>&nbsp;
-<i>173</i>&nbsp;    private ArrayList&lt;String&gt; getStraightLineMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
-<i>174</i>&nbsp;    {
-<b class="fc"><i>175</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
-<i>176</i>&nbsp;
-<i>177</i>&nbsp;        // go from current position positive along row
-<b class="fc"><i>178</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, true, col+1, false);</b>
-<i>179</i>&nbsp;
-<i>180</i>&nbsp;        // go from current position negative along row
-<b class="fc"><i>181</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, false, col-1, false);</b>
-<i>182</i>&nbsp;
-<i>183</i>&nbsp;        // go from current position positive along column
-<b class="fc"><i>184</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, true, row+1, true);</b>
-<i>185</i>&nbsp;
-<i>186</i>&nbsp;        // go from current position negative along column
-<b class="fc"><i>187</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, false, row-1, true);</b>
-<i>188</i>&nbsp;
-<b class="fc"><i>189</i>&nbsp;        return availableMoves;</b>
-<i>190</i>&nbsp;    }
-<i>191</i>&nbsp;
-<i>192</i>&nbsp;    private ArrayList&lt;String&gt; getDiagonalLineMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
-<i>193</i>&nbsp;    {
-<b class="fc"><i>194</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
-<i>195</i>&nbsp;
-<b class="fc"><i>196</i>&nbsp;        int localRow = row + 1;</b>
-<b class="fc"><i>197</i>&nbsp;        int localCol = col + 1;</b>
-<i>198</i>&nbsp;
-<i>199</i>&nbsp;        // go from current position to positive row positive col
-<b class="fc"><i>200</i>&nbsp;        while(localRow &lt; 8 &amp;&amp; localCol &lt; 8)</b>
-<i>201</i>&nbsp;        {
-<b class="fc"><i>202</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
-<i>203</i>&nbsp;            {
-<b class="fc"><i>204</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
-<i>205</i>&nbsp;            }
-<i>206</i>&nbsp;            else
-<i>207</i>&nbsp;            {
-<i>208</i>&nbsp;                // add capture move if not same color
-<b class="fc"><i>209</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
-<b class="fc"><i>210</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
-<i>211</i>&nbsp;                break;
-<i>212</i>&nbsp;            }
-<i>213</i>&nbsp;
-<b class="fc"><i>214</i>&nbsp;            localRow++;</b>
-<b class="fc"><i>215</i>&nbsp;            localCol++;</b>
-<i>216</i>&nbsp;        }
-<i>217</i>&nbsp;
-<i>218</i>&nbsp;        // reset between checks
-<b class="fc"><i>219</i>&nbsp;        localRow = row + 1;</b>
-<b class="fc"><i>220</i>&nbsp;        localCol = col - 1;</b>
-<i>221</i>&nbsp;
-<i>222</i>&nbsp;        // go from current position to positive row negative col
-<b class="fc"><i>223</i>&nbsp;        while(localRow &lt; 8 &amp;&amp; localCol &gt;= 0)</b>
-<i>224</i>&nbsp;        {
-<b class="fc"><i>225</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
-<i>226</i>&nbsp;            {
-<b class="fc"><i>227</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
-<i>228</i>&nbsp;            }
-<i>229</i>&nbsp;            else
-<i>230</i>&nbsp;            {
-<i>231</i>&nbsp;                // add capture move if not same color
-<b class="fc"><i>232</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
-<b class="fc"><i>233</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
-<i>234</i>&nbsp;                break;
-<i>235</i>&nbsp;            }
-<i>236</i>&nbsp;
-<b class="fc"><i>237</i>&nbsp;            localRow++;</b>
-<b class="fc"><i>238</i>&nbsp;            localCol--;</b>
-<i>239</i>&nbsp;        }
-<i>240</i>&nbsp;
-<i>241</i>&nbsp;        // reset between checks
-<b class="fc"><i>242</i>&nbsp;        localRow = row - 1;</b>
-<b class="fc"><i>243</i>&nbsp;        localCol = col + 1;</b>
-<i>244</i>&nbsp;
-<i>245</i>&nbsp;        // go from current position to negative row positive col
-<b class="fc"><i>246</i>&nbsp;        while(localRow &gt;= 0 &amp;&amp; localCol &lt; 8)</b>
-<i>247</i>&nbsp;        {
-<b class="fc"><i>248</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
-<i>249</i>&nbsp;            {
-<b class="fc"><i>250</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
-<i>251</i>&nbsp;            }
-<i>252</i>&nbsp;            else
-<i>253</i>&nbsp;            {
-<i>254</i>&nbsp;                // add capture move if not same color
-<b class="fc"><i>255</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
-<b class="fc"><i>256</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
-<i>257</i>&nbsp;                break;
-<i>258</i>&nbsp;            }
-<i>259</i>&nbsp;
-<b class="fc"><i>260</i>&nbsp;            localRow--;</b>
-<b class="fc"><i>261</i>&nbsp;            localCol++;</b>
-<i>262</i>&nbsp;        }
-<i>263</i>&nbsp;
-<i>264</i>&nbsp;        // reset between checks
-<b class="fc"><i>265</i>&nbsp;        localRow = row - 1;</b>
-<b class="fc"><i>266</i>&nbsp;        localCol = col - 1;</b>
-<i>267</i>&nbsp;
-<i>268</i>&nbsp;        // go from current position to negative row negative col
-<b class="fc"><i>269</i>&nbsp;        while(localRow &gt;= 0 &amp;&amp; localCol &gt;= 0)</b>
-<i>270</i>&nbsp;        {
-<b class="fc"><i>271</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
-<i>272</i>&nbsp;            {
-<b class="fc"><i>273</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
-<i>274</i>&nbsp;            }
-<i>275</i>&nbsp;            else
-<i>276</i>&nbsp;            {
-<i>277</i>&nbsp;                // add capture move if not same color
-<b class="fc"><i>278</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
-<b class="fc"><i>279</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
-<i>280</i>&nbsp;                break;
-<i>281</i>&nbsp;            }
-<i>282</i>&nbsp;
-<b class="fc"><i>283</i>&nbsp;            localRow--;</b>
-<b class="fc"><i>284</i>&nbsp;            localCol--;</b>
-<i>285</i>&nbsp;        }
-<i>286</i>&nbsp;
-<b class="fc"><i>287</i>&nbsp;        return availableMoves;</b>
-<i>288</i>&nbsp;    }
+<i>166</i>&nbsp;    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;    private ArrayList&lt;String&gt; getStraightLineMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
+<i>169</i>&nbsp;    {
+<b class="fc"><i>170</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
+<i>171</i>&nbsp;
+<i>172</i>&nbsp;        // go from current position positive along row
+<b class="fc"><i>173</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, true, col+1, false);</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;        // go from current position negative along row
+<b class="fc"><i>176</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, false, col-1, false);</b>
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;        // go from current position positive along column
+<b class="fc"><i>179</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, true, row+1, true);</b>
+<i>180</i>&nbsp;
+<i>181</i>&nbsp;        // go from current position negative along column
+<b class="fc"><i>182</i>&nbsp;        straightLineMovementLoop(col, row, availableMoves, board, sideColor, false, row-1, true);</b>
+<i>183</i>&nbsp;
+<b class="fc"><i>184</i>&nbsp;        return availableMoves;</b>
+<i>185</i>&nbsp;    }
+<i>186</i>&nbsp;
+<i>187</i>&nbsp;    private ArrayList&lt;String&gt; getDiagonalLineMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
+<i>188</i>&nbsp;    {
+<b class="fc"><i>189</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
+<i>190</i>&nbsp;
+<b class="fc"><i>191</i>&nbsp;        int localRow = row + 1;</b>
+<b class="fc"><i>192</i>&nbsp;        int localCol = col + 1;</b>
+<i>193</i>&nbsp;
+<i>194</i>&nbsp;        // go from current position to positive row positive col
+<b class="fc"><i>195</i>&nbsp;        while(localRow &lt; 8 &amp;&amp; localCol &lt; 8)</b>
+<i>196</i>&nbsp;        {
+<b class="fc"><i>197</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
+<i>198</i>&nbsp;            {
+<b class="fc"><i>199</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
+<i>200</i>&nbsp;            }
+<i>201</i>&nbsp;            else
+<i>202</i>&nbsp;            {
+<i>203</i>&nbsp;                // add capture move if not same color
+<b class="fc"><i>204</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
+<b class="fc"><i>205</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
+<i>206</i>&nbsp;                break;
+<i>207</i>&nbsp;            }
+<i>208</i>&nbsp;
+<b class="fc"><i>209</i>&nbsp;            localRow++;</b>
+<b class="fc"><i>210</i>&nbsp;            localCol++;</b>
+<i>211</i>&nbsp;        }
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;        // reset between checks
+<b class="fc"><i>214</i>&nbsp;        localRow = row + 1;</b>
+<b class="fc"><i>215</i>&nbsp;        localCol = col - 1;</b>
+<i>216</i>&nbsp;
+<i>217</i>&nbsp;        // go from current position to positive row negative col
+<b class="fc"><i>218</i>&nbsp;        while(localRow &lt; 8 &amp;&amp; localCol &gt;= 0)</b>
+<i>219</i>&nbsp;        {
+<b class="fc"><i>220</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
+<i>221</i>&nbsp;            {
+<b class="fc"><i>222</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
+<i>223</i>&nbsp;            }
+<i>224</i>&nbsp;            else
+<i>225</i>&nbsp;            {
+<i>226</i>&nbsp;                // add capture move if not same color
+<b class="fc"><i>227</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
+<b class="fc"><i>228</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
+<i>229</i>&nbsp;                break;
+<i>230</i>&nbsp;            }
+<i>231</i>&nbsp;
+<b class="fc"><i>232</i>&nbsp;            localRow++;</b>
+<b class="fc"><i>233</i>&nbsp;            localCol--;</b>
+<i>234</i>&nbsp;        }
+<i>235</i>&nbsp;
+<i>236</i>&nbsp;        // reset between checks
+<b class="fc"><i>237</i>&nbsp;        localRow = row - 1;</b>
+<b class="fc"><i>238</i>&nbsp;        localCol = col + 1;</b>
+<i>239</i>&nbsp;
+<i>240</i>&nbsp;        // go from current position to negative row positive col
+<b class="fc"><i>241</i>&nbsp;        while(localRow &gt;= 0 &amp;&amp; localCol &lt; 8)</b>
+<i>242</i>&nbsp;        {
+<b class="fc"><i>243</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
+<i>244</i>&nbsp;            {
+<b class="fc"><i>245</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
+<i>246</i>&nbsp;            }
+<i>247</i>&nbsp;            else
+<i>248</i>&nbsp;            {
+<i>249</i>&nbsp;                // add capture move if not same color
+<b class="fc"><i>250</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
+<b class="fc"><i>251</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
+<i>252</i>&nbsp;                break;
+<i>253</i>&nbsp;            }
+<i>254</i>&nbsp;
+<b class="fc"><i>255</i>&nbsp;            localRow--;</b>
+<b class="fc"><i>256</i>&nbsp;            localCol++;</b>
+<i>257</i>&nbsp;        }
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;        // reset between checks
+<b class="fc"><i>260</i>&nbsp;        localRow = row - 1;</b>
+<b class="fc"><i>261</i>&nbsp;        localCol = col - 1;</b>
+<i>262</i>&nbsp;
+<i>263</i>&nbsp;        // go from current position to negative row negative col
+<b class="fc"><i>264</i>&nbsp;        while(localRow &gt;= 0 &amp;&amp; localCol &gt;= 0)</b>
+<i>265</i>&nbsp;        {
+<b class="fc"><i>266</i>&nbsp;            if(board.getPieceAtCoord(localRow, localCol).equals(&quot;x&quot;))</b>
+<i>267</i>&nbsp;            {
+<b class="fc"><i>268</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(localRow, localCol));</b>
+<i>269</i>&nbsp;            }
+<i>270</i>&nbsp;            else
+<i>271</i>&nbsp;            {
+<i>272</i>&nbsp;                // add capture move if not same color
+<b class="fc"><i>273</i>&nbsp;                if(!board.getPieceAtCoord(localRow,localCol).startsWith(sideColor + &quot;&quot;))</b>
+<b class="fc"><i>274</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(localRow,localCol));</b>
+<i>275</i>&nbsp;                break;
+<i>276</i>&nbsp;            }
+<i>277</i>&nbsp;
+<b class="fc"><i>278</i>&nbsp;            localRow--;</b>
+<b class="fc"><i>279</i>&nbsp;            localCol--;</b>
+<i>280</i>&nbsp;        }
+<i>281</i>&nbsp;
+<b class="fc"><i>282</i>&nbsp;        return availableMoves;</b>
+<i>283</i>&nbsp;    }
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;    private ArrayList&lt;String&gt; getPawnMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
+<i>286</i>&nbsp;    {
+<i>287</i>&nbsp;        // pawn -- forward in one direction
+<i>288</i>&nbsp;        // diagonal capture, two movements if in original place
 <i>289</i>&nbsp;
-<i>290</i>&nbsp;    private ArrayList&lt;String&gt; getPawnMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
-<i>291</i>&nbsp;    {
-<i>292</i>&nbsp;        // pawn -- forward in one direction
-<i>293</i>&nbsp;        // diagonal capture, two movements if in original place
-<i>294</i>&nbsp;
-<b class="fc"><i>295</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
-<i>296</i>&nbsp;
-<b class="fc"><i>297</i>&nbsp;        if(sideColor == &#39;W&#39;)</b>
-<i>298</i>&nbsp;        {
-<i>299</i>&nbsp;            // allow double move if in original position
-<b class="fc"><i>300</i>&nbsp;            if(col == 1)</b>
-<i>301</i>&nbsp;            {
-<b class="fc"><i>302</i>&nbsp;                if(board.getPieceAtCoord(row, 2).equals(&quot;x&quot;))</b>
-<i>303</i>&nbsp;                {
-<b class="fc"><i>304</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, 2));</b>
-<i>305</i>&nbsp;
-<b class="fc"><i>306</i>&nbsp;                    if(board.getPieceAtCoord(row, 3).equals(&quot;x&quot;))</b>
-<i>307</i>&nbsp;                    {
-<b class="fc"><i>308</i>&nbsp;                        availableMoves.add(board.getLocationCodeFromCoordinates(row, 3));</b>
-<i>309</i>&nbsp;                    }
-<i>310</i>&nbsp;                }
-<i>311</i>&nbsp;            }
-<i>312</i>&nbsp;
-<i>313</i>&nbsp;            // check the space directly in front for empty, and the spaces to either side for
-<i>314</i>&nbsp;            // enemy pieces
-<i>315</i>&nbsp;            else
-<i>316</i>&nbsp;            {
-<i>317</i>&nbsp;                // if the space directly in front is open or capture is available on either side
-<b class="fc"><i>318</i>&nbsp;                if(col + 1 &lt; 8 &amp;&amp; board.getPieceAtCoord(row, col + 1).equals(&quot;x&quot;))</b>
+<b class="fc"><i>290</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
+<i>291</i>&nbsp;
+<b class="fc"><i>292</i>&nbsp;        if(sideColor == &#39;W&#39;)</b>
+<i>293</i>&nbsp;        {
+<i>294</i>&nbsp;            // allow double move if in original position
+<b class="fc"><i>295</i>&nbsp;            if(col == 1)</b>
+<i>296</i>&nbsp;            {
+<b class="fc"><i>297</i>&nbsp;                if(board.getPieceAtCoord(row, 2).equals(&quot;x&quot;))</b>
+<i>298</i>&nbsp;                {
+<b class="fc"><i>299</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, 2));</b>
+<i>300</i>&nbsp;
+<b class="fc"><i>301</i>&nbsp;                    if(board.getPieceAtCoord(row, 3).equals(&quot;x&quot;))</b>
+<i>302</i>&nbsp;                    {
+<b class="fc"><i>303</i>&nbsp;                        availableMoves.add(board.getLocationCodeFromCoordinates(row, 3));</b>
+<i>304</i>&nbsp;                    }
+<i>305</i>&nbsp;                }
+<i>306</i>&nbsp;            }
+<i>307</i>&nbsp;
+<i>308</i>&nbsp;            // check the space directly in front for empty, and the spaces to either side for
+<i>309</i>&nbsp;            // enemy pieces
+<i>310</i>&nbsp;            else
+<i>311</i>&nbsp;            {
+<i>312</i>&nbsp;                // if the space directly in front is open or capture is available on either side
+<b class="fc"><i>313</i>&nbsp;                if(col + 1 &lt; 8 &amp;&amp; board.getPieceAtCoord(row, col + 1).equals(&quot;x&quot;))</b>
+<i>314</i>&nbsp;                {
+<b class="fc"><i>315</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, col + 1));</b>
+<i>316</i>&nbsp;                }
+<i>317</i>&nbsp;
+<b class="fc"><i>318</i>&nbsp;                if(col + 1 &lt; 8 &amp;&amp; row + 1 &lt; 8 &amp;&amp; board.getPieceAtCoord(row + 1, col + 1).charAt(0) == &#39;B&#39;)</b>
 <i>319</i>&nbsp;                {
-<b class="fc"><i>320</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, col + 1));</b>
+<b class="fc"><i>320</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col + 1));</b>
 <i>321</i>&nbsp;                }
 <i>322</i>&nbsp;
-<b class="fc"><i>323</i>&nbsp;                if(col + 1 &lt; 8 &amp;&amp; row + 1 &lt; 8 &amp;&amp; board.getPieceAtCoord(row + 1, col + 1).charAt(0) == &#39;B&#39;)</b>
+<b class="fc"><i>323</i>&nbsp;                if(col + 1 &lt; 8 &amp;&amp; row -1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(row - 1, col + 1).charAt(0) == &#39;B&#39;)</b>
 <i>324</i>&nbsp;                {
-<b class="fc"><i>325</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col + 1));</b>
+<b class="fc"><i>325</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col + 1));</b>
 <i>326</i>&nbsp;                }
-<i>327</i>&nbsp;
-<b class="fc"><i>328</i>&nbsp;                if(col + 1 &lt; 8 &amp;&amp; row -1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(row - 1, col + 1).charAt(0) == &#39;B&#39;)</b>
-<i>329</i>&nbsp;                {
-<b class="fc"><i>330</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col + 1));</b>
-<i>331</i>&nbsp;                }
-<i>332</i>&nbsp;            }
-<i>333</i>&nbsp;        }
-<i>334</i>&nbsp;
-<b class="fc"><i>335</i>&nbsp;        else if(sideColor == &#39;B&#39;)</b>
-<i>336</i>&nbsp;        {
-<i>337</i>&nbsp;            // allow double move if in original position
-<b class="fc"><i>338</i>&nbsp;            if(col == 6)</b>
-<i>339</i>&nbsp;            {
-<b class="fc"><i>340</i>&nbsp;                if(board.getPieceAtCoord(row, 5).equals(&quot;x&quot;))</b>
-<i>341</i>&nbsp;                {
-<b class="fc"><i>342</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, 5));</b>
-<i>343</i>&nbsp;
-<b class="fc"><i>344</i>&nbsp;                    if(board.getPieceAtCoord(row, 4).equals(&quot;x&quot;))</b>
-<i>345</i>&nbsp;                    {
-<b class="nc"><i>346</i>&nbsp;                        availableMoves.add(board.getLocationCodeFromCoordinates(row, 4));</b>
-<i>347</i>&nbsp;                    }
-<i>348</i>&nbsp;                }
-<i>349</i>&nbsp;            }
-<i>350</i>&nbsp;
-<i>351</i>&nbsp;            // check the space directly in front for empty, and the spaces to either side for
-<i>352</i>&nbsp;            // enemy pieces
-<i>353</i>&nbsp;            else
-<i>354</i>&nbsp;            {
-<b class="fc"><i>355</i>&nbsp;                if(col - 1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(row, col - 1).equals(&quot;x&quot;))</b>
+<i>327</i>&nbsp;            }
+<i>328</i>&nbsp;        }
+<i>329</i>&nbsp;
+<b class="fc"><i>330</i>&nbsp;        else if(sideColor == &#39;B&#39;)</b>
+<i>331</i>&nbsp;        {
+<i>332</i>&nbsp;            // allow double move if in original position
+<b class="fc"><i>333</i>&nbsp;            if(col == 6)</b>
+<i>334</i>&nbsp;            {
+<b class="fc"><i>335</i>&nbsp;                if(board.getPieceAtCoord(row, 5).equals(&quot;x&quot;))</b>
+<i>336</i>&nbsp;                {
+<b class="fc"><i>337</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, 5));</b>
+<i>338</i>&nbsp;
+<b class="fc"><i>339</i>&nbsp;                    if(board.getPieceAtCoord(row, 4).equals(&quot;x&quot;))</b>
+<i>340</i>&nbsp;                    {
+<b class="nc"><i>341</i>&nbsp;                        availableMoves.add(board.getLocationCodeFromCoordinates(row, 4));</b>
+<i>342</i>&nbsp;                    }
+<i>343</i>&nbsp;                }
+<i>344</i>&nbsp;            }
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;            // check the space directly in front for empty, and the spaces to either side for
+<i>347</i>&nbsp;            // enemy pieces
+<i>348</i>&nbsp;            else
+<i>349</i>&nbsp;            {
+<b class="fc"><i>350</i>&nbsp;                if(col - 1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(row, col - 1).equals(&quot;x&quot;))</b>
+<i>351</i>&nbsp;                {
+<b class="fc"><i>352</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, col - 1));</b>
+<i>353</i>&nbsp;                }
+<i>354</i>&nbsp;
+<b class="fc"><i>355</i>&nbsp;                if(col - 1 &gt;= 0 &amp;&amp; row + 1 &lt; 8 &amp;&amp; board.getPieceAtCoord(row + 1, col - 1).charAt(0) == &#39;W&#39;)</b>
 <i>356</i>&nbsp;                {
-<b class="fc"><i>357</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, col - 1));</b>
+<b class="fc"><i>357</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col - 1));</b>
 <i>358</i>&nbsp;                }
 <i>359</i>&nbsp;
-<b class="fc"><i>360</i>&nbsp;                if(col - 1 &gt;= 0 &amp;&amp; row + 1 &lt; 8 &amp;&amp; board.getPieceAtCoord(row + 1, col - 1).charAt(0) == &#39;W&#39;)</b>
+<b class="fc"><i>360</i>&nbsp;                if(col - 1 &gt;= 0 &amp;&amp; row - 1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(row - 1, col - 1).charAt(0) == &#39;W&#39;)</b>
 <i>361</i>&nbsp;                {
-<b class="fc"><i>362</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col - 1));</b>
+<b class="fc"><i>362</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col - 1));</b>
 <i>363</i>&nbsp;                }
-<i>364</i>&nbsp;
-<b class="fc"><i>365</i>&nbsp;                if(col - 1 &gt;= 0 &amp;&amp; row - 1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(row - 1, col - 1).charAt(0) == &#39;W&#39;)</b>
-<i>366</i>&nbsp;                {
-<b class="fc"><i>367</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col - 1));</b>
-<i>368</i>&nbsp;                }
-<i>369</i>&nbsp;            }
+<i>364</i>&nbsp;            }
+<i>365</i>&nbsp;        }
+<i>366</i>&nbsp;
+<i>367</i>&nbsp;        else
+<i>368</i>&nbsp;        {
+<b class="nc"><i>369</i>&nbsp;            throw new Exception(&quot;Unknown Side Color: &quot; + sideColor);</b>
 <i>370</i>&nbsp;        }
 <i>371</i>&nbsp;
-<i>372</i>&nbsp;        else
-<i>373</i>&nbsp;        {
-<b class="nc"><i>374</i>&nbsp;            throw new Exception(&quot;Unknown Side Color: &quot; + sideColor);</b>
-<i>375</i>&nbsp;        }
-<i>376</i>&nbsp;
-<b class="fc"><i>377</i>&nbsp;        return availableMoves;</b>
-<i>378</i>&nbsp;    }
-<i>379</i>&nbsp;
-<i>380</i>&nbsp;    private ArrayList&lt;String&gt; getKnightMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
-<i>381</i>&nbsp;    {
-<b class="fc"><i>382</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
-<i>383</i>&nbsp;
-<i>384</i>&nbsp;        //up 1 left 2
-<b class="fc"><i>385</i>&nbsp;        if(row + 1 &lt; 8 &amp;&amp; col - 2 &gt;= 0 &amp;&amp;</b>
-<b class="fc"><i>386</i>&nbsp;                (board.getPieceAtCoord(row + 1, col - 2).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>387</i>&nbsp;                 board.getPieceAtCoord(row + 1, col - 2).charAt(0) !=  sideColor))</b>
-<i>388</i>&nbsp;        {
-<b class="fc"><i>389</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col - 2));</b>
-<i>390</i>&nbsp;        }
-<i>391</i>&nbsp;
-<i>392</i>&nbsp;        // up 2 left 1
-<b class="fc"><i>393</i>&nbsp;        if(row + 2 &lt; 8 &amp;&amp; col - 1 &gt;= 0 &amp;&amp;</b>
-<b class="fc"><i>394</i>&nbsp;                (board.getPieceAtCoord(row + 2, col - 1).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>395</i>&nbsp;                 board.getPieceAtCoord(row + 2, col - 1).charAt(0) !=  sideColor))</b>
-<i>396</i>&nbsp;        {
-<b class="fc"><i>397</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 2, col - 1));</b>
-<i>398</i>&nbsp;        }
-<i>399</i>&nbsp;
-<i>400</i>&nbsp;        // up 1 right 2
-<b class="fc"><i>401</i>&nbsp;        if(row + 1 &lt; 8 &amp;&amp; col + 2 &lt; 8 &amp;&amp;</b>
-<b class="fc"><i>402</i>&nbsp;                (board.getPieceAtCoord(row + 1, col + 2).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>403</i>&nbsp;                 board.getPieceAtCoord(row + 1, col + 2).charAt(0) !=  sideColor))</b>
-<i>404</i>&nbsp;        {
-<b class="fc"><i>405</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col + 2));</b>
-<i>406</i>&nbsp;        }
-<i>407</i>&nbsp;
-<i>408</i>&nbsp;        // up 2 right 1
-<b class="fc"><i>409</i>&nbsp;        if(row + 2 &lt; 8 &amp;&amp; col + 1 &lt; 8 &amp;&amp;</b>
-<b class="fc"><i>410</i>&nbsp;                (board.getPieceAtCoord(row + 2, col + 1).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>411</i>&nbsp;                 board.getPieceAtCoord(row + 2, col + 1).charAt(0) !=  sideColor))</b>
-<i>412</i>&nbsp;        {
-<b class="fc"><i>413</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 2, col + 1));</b>
-<i>414</i>&nbsp;        }
-<i>415</i>&nbsp;
-<i>416</i>&nbsp;        // down 1 left 2
-<b class="fc"><i>417</i>&nbsp;        if(row - 1 &gt;= 0 &amp;&amp; col - 2 &gt;= 0 &amp;&amp;</b>
-<b class="fc"><i>418</i>&nbsp;                (board.getPieceAtCoord(row - 1, col - 2).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>419</i>&nbsp;                 board.getPieceAtCoord(row - 1, col - 2).charAt(0) !=  sideColor))</b>
-<i>420</i>&nbsp;        {
-<b class="fc"><i>421</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col - 2));</b>
-<i>422</i>&nbsp;        }
-<i>423</i>&nbsp;
-<i>424</i>&nbsp;        // down 2 left 1
-<b class="fc"><i>425</i>&nbsp;        if(row - 2 &gt;= 0 &amp;&amp; col - 1 &gt;= 0 &amp;&amp;</b>
-<b class="fc"><i>426</i>&nbsp;                (board.getPieceAtCoord(row - 2, col - 1).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>427</i>&nbsp;                 board.getPieceAtCoord(row - 2, col - 1).charAt(0) !=  sideColor))</b>
-<i>428</i>&nbsp;        {
-<b class="fc"><i>429</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 2, col - 1));</b>
-<i>430</i>&nbsp;        }
-<i>431</i>&nbsp;
-<i>432</i>&nbsp;        // down 1 right 2
-<b class="fc"><i>433</i>&nbsp;        if(row - 1 &gt;= 0 &amp;&amp; col + 2 &lt; 8 &amp;&amp;</b>
-<b class="fc"><i>434</i>&nbsp;                (board.getPieceAtCoord(row - 1, col + 2).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>435</i>&nbsp;                 board.getPieceAtCoord(row - 1, col + 2).charAt(0) !=  sideColor))</b>
-<i>436</i>&nbsp;        {
-<b class="fc"><i>437</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col + 2));</b>
-<i>438</i>&nbsp;        }
-<i>439</i>&nbsp;
-<i>440</i>&nbsp;        // down 2 right 1
-<b class="fc"><i>441</i>&nbsp;        if(row - 2 &gt;= 0 &amp;&amp; col + 1 &lt; 8 &amp;&amp;</b>
-<b class="fc"><i>442</i>&nbsp;                (board.getPieceAtCoord(row - 2, col + 1).equals(&quot;x&quot;) ||</b>
-<b class="fc"><i>443</i>&nbsp;                 board.getPieceAtCoord(row - 2, col + 1).charAt(0) !=  sideColor))</b>
-<i>444</i>&nbsp;        {
-<b class="fc"><i>445</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 2, col + 1));</b>
-<i>446</i>&nbsp;        }
-<i>447</i>&nbsp;
-<b class="fc"><i>448</i>&nbsp;        return availableMoves;</b>
-<i>449</i>&nbsp;    }
-<i>450</i>&nbsp;
-<i>451</i>&nbsp;    private void straightLineMovementLoop(int col,
-<i>452</i>&nbsp;                                          int row,
-<i>453</i>&nbsp;                                          ArrayList&lt;String&gt; availableMoves,
-<i>454</i>&nbsp;                                          ChessBoard board,
-<i>455</i>&nbsp;                                          char sideColor,
-<i>456</i>&nbsp;                                          boolean countUp,
-<i>457</i>&nbsp;                                          int countFrom,
-<i>458</i>&nbsp;                                          boolean isColumn)
-<i>459</i>&nbsp;            throws Exception
-<i>460</i>&nbsp;    {
-<i>461</i>&nbsp;        // variable for positive vs negative
-<b class="fc"><i>462</i>&nbsp;        if(countUp)</b>
-<i>463</i>&nbsp;        {
-<b class="fc"><i>464</i>&nbsp;            for(int i = countFrom; i &lt; 8; i++)</b>
-<i>465</i>&nbsp;            {
-<b class="fc"><i>466</i>&nbsp;               if(straightLineMovementLogic(row, col, i, availableMoves, board, isColumn, sideColor))</b>
-<b class="fc"><i>467</i>&nbsp;                   break;</b>
-<i>468</i>&nbsp;            }
-<i>469</i>&nbsp;        }
-<i>470</i>&nbsp;
-<i>471</i>&nbsp;        else
-<i>472</i>&nbsp;        {
-<b class="fc"><i>473</i>&nbsp;            for(int i = countFrom; i &gt;= 0; i--)</b>
-<i>474</i>&nbsp;            {
-<b class="fc"><i>475</i>&nbsp;                if(straightLineMovementLogic(row, col, i, availableMoves, board, isColumn, sideColor))</b>
-<b class="fc"><i>476</i>&nbsp;                   break;</b>
-<i>477</i>&nbsp;            }
-<i>478</i>&nbsp;        }
-<b class="fc"><i>479</i>&nbsp;    }</b>
-<i>480</i>&nbsp;
-<i>481</i>&nbsp;    private boolean straightLineMovementLogic(int row,
-<i>482</i>&nbsp;                                           int col,
-<i>483</i>&nbsp;                                           int i,
-<i>484</i>&nbsp;                                           ArrayList&lt;String&gt; availableMoves,
-<i>485</i>&nbsp;                                           ChessBoard board,
-<i>486</i>&nbsp;                                           boolean isColumn,
-<i>487</i>&nbsp;                                           char sideColor) throws Exception
-<i>488</i>&nbsp;    {
-<i>489</i>&nbsp;        // tests for whether column or row and matching piece x check
-<b class="fc"><i>490</i>&nbsp;        if (</b>
-<b class="fc"><i>491</i>&nbsp;                (isColumn &amp;&amp; board.getPieceAtCoord(i, col).equals(&quot;x&quot;)) ||</b>
-<b class="fc"><i>492</i>&nbsp;                (!isColumn &amp;&amp; board.getPieceAtCoord(row, i).equals(&quot;x&quot;))</b>
-<i>493</i>&nbsp;        ) {
-<b class="fc"><i>494</i>&nbsp;            if(isColumn)</b>
-<b class="fc"><i>495</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(i, col));</b>
-<i>496</i>&nbsp;            else
-<b class="fc"><i>497</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(row, i));</b>
-<b class="fc"><i>498</i>&nbsp;            return false;</b>
-<i>499</i>&nbsp;        }
-<i>500</i>&nbsp;
-<i>501</i>&nbsp;        else
-<i>502</i>&nbsp;        {
-<i>503</i>&nbsp;            // add capture move if not same color
-<b class="fc"><i>504</i>&nbsp;            if (isColumn)</b>
-<i>505</i>&nbsp;            {
-<b class="fc"><i>506</i>&nbsp;                if (!board.getPieceAtCoord(i, col).startsWith(sideColor + &quot;&quot;))</b>
-<b class="fc"><i>507</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(i, col));</b>
-<i>508</i>&nbsp;
-<b class="fc"><i>509</i>&nbsp;                return true;</b>
-<i>510</i>&nbsp;            }
+<b class="fc"><i>372</i>&nbsp;        return availableMoves;</b>
+<i>373</i>&nbsp;    }
+<i>374</i>&nbsp;
+<i>375</i>&nbsp;    private ArrayList&lt;String&gt; getKnightMovement(int row, int col, ChessBoard board, char sideColor) throws Exception
+<i>376</i>&nbsp;    {
+<b class="fc"><i>377</i>&nbsp;        ArrayList&lt;String&gt; availableMoves = new ArrayList&lt;&gt;();</b>
+<i>378</i>&nbsp;
+<i>379</i>&nbsp;        //up 1 left 2
+<b class="fc"><i>380</i>&nbsp;        if(row + 1 &lt; 8 &amp;&amp; col - 2 &gt;= 0 &amp;&amp;</b>
+<b class="fc"><i>381</i>&nbsp;                (board.getPieceAtCoord(row + 1, col - 2).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>382</i>&nbsp;                 board.getPieceAtCoord(row + 1, col - 2).charAt(0) !=  sideColor))</b>
+<i>383</i>&nbsp;        {
+<b class="fc"><i>384</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col - 2));</b>
+<i>385</i>&nbsp;        }
+<i>386</i>&nbsp;
+<i>387</i>&nbsp;        // up 2 left 1
+<b class="fc"><i>388</i>&nbsp;        if(row + 2 &lt; 8 &amp;&amp; col - 1 &gt;= 0 &amp;&amp;</b>
+<b class="fc"><i>389</i>&nbsp;                (board.getPieceAtCoord(row + 2, col - 1).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>390</i>&nbsp;                 board.getPieceAtCoord(row + 2, col - 1).charAt(0) !=  sideColor))</b>
+<i>391</i>&nbsp;        {
+<b class="fc"><i>392</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 2, col - 1));</b>
+<i>393</i>&nbsp;        }
+<i>394</i>&nbsp;
+<i>395</i>&nbsp;        // up 1 right 2
+<b class="fc"><i>396</i>&nbsp;        if(row + 1 &lt; 8 &amp;&amp; col + 2 &lt; 8 &amp;&amp;</b>
+<b class="fc"><i>397</i>&nbsp;                (board.getPieceAtCoord(row + 1, col + 2).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>398</i>&nbsp;                 board.getPieceAtCoord(row + 1, col + 2).charAt(0) !=  sideColor))</b>
+<i>399</i>&nbsp;        {
+<b class="fc"><i>400</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 1, col + 2));</b>
+<i>401</i>&nbsp;        }
+<i>402</i>&nbsp;
+<i>403</i>&nbsp;        // up 2 right 1
+<b class="fc"><i>404</i>&nbsp;        if(row + 2 &lt; 8 &amp;&amp; col + 1 &lt; 8 &amp;&amp;</b>
+<b class="fc"><i>405</i>&nbsp;                (board.getPieceAtCoord(row + 2, col + 1).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>406</i>&nbsp;                 board.getPieceAtCoord(row + 2, col + 1).charAt(0) !=  sideColor))</b>
+<i>407</i>&nbsp;        {
+<b class="fc"><i>408</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row + 2, col + 1));</b>
+<i>409</i>&nbsp;        }
+<i>410</i>&nbsp;
+<i>411</i>&nbsp;        // down 1 left 2
+<b class="fc"><i>412</i>&nbsp;        if(row - 1 &gt;= 0 &amp;&amp; col - 2 &gt;= 0 &amp;&amp;</b>
+<b class="fc"><i>413</i>&nbsp;                (board.getPieceAtCoord(row - 1, col - 2).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>414</i>&nbsp;                 board.getPieceAtCoord(row - 1, col - 2).charAt(0) !=  sideColor))</b>
+<i>415</i>&nbsp;        {
+<b class="fc"><i>416</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col - 2));</b>
+<i>417</i>&nbsp;        }
+<i>418</i>&nbsp;
+<i>419</i>&nbsp;        // down 2 left 1
+<b class="fc"><i>420</i>&nbsp;        if(row - 2 &gt;= 0 &amp;&amp; col - 1 &gt;= 0 &amp;&amp;</b>
+<b class="fc"><i>421</i>&nbsp;                (board.getPieceAtCoord(row - 2, col - 1).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>422</i>&nbsp;                 board.getPieceAtCoord(row - 2, col - 1).charAt(0) !=  sideColor))</b>
+<i>423</i>&nbsp;        {
+<b class="fc"><i>424</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 2, col - 1));</b>
+<i>425</i>&nbsp;        }
+<i>426</i>&nbsp;
+<i>427</i>&nbsp;        // down 1 right 2
+<b class="fc"><i>428</i>&nbsp;        if(row - 1 &gt;= 0 &amp;&amp; col + 2 &lt; 8 &amp;&amp;</b>
+<b class="fc"><i>429</i>&nbsp;                (board.getPieceAtCoord(row - 1, col + 2).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>430</i>&nbsp;                 board.getPieceAtCoord(row - 1, col + 2).charAt(0) !=  sideColor))</b>
+<i>431</i>&nbsp;        {
+<b class="fc"><i>432</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 1, col + 2));</b>
+<i>433</i>&nbsp;        }
+<i>434</i>&nbsp;
+<i>435</i>&nbsp;        // down 2 right 1
+<b class="fc"><i>436</i>&nbsp;        if(row - 2 &gt;= 0 &amp;&amp; col + 1 &lt; 8 &amp;&amp;</b>
+<b class="fc"><i>437</i>&nbsp;                (board.getPieceAtCoord(row - 2, col + 1).equals(&quot;x&quot;) ||</b>
+<b class="fc"><i>438</i>&nbsp;                 board.getPieceAtCoord(row - 2, col + 1).charAt(0) !=  sideColor))</b>
+<i>439</i>&nbsp;        {
+<b class="fc"><i>440</i>&nbsp;            availableMoves.add(board.getLocationCodeFromCoordinates(row - 2, col + 1));</b>
+<i>441</i>&nbsp;        }
+<i>442</i>&nbsp;
+<b class="fc"><i>443</i>&nbsp;        return availableMoves;</b>
+<i>444</i>&nbsp;    }
+<i>445</i>&nbsp;
+<i>446</i>&nbsp;    private void straightLineMovementLoop(int col,
+<i>447</i>&nbsp;                                          int row,
+<i>448</i>&nbsp;                                          ArrayList&lt;String&gt; availableMoves,
+<i>449</i>&nbsp;                                          ChessBoard board,
+<i>450</i>&nbsp;                                          char sideColor,
+<i>451</i>&nbsp;                                          boolean countUp,
+<i>452</i>&nbsp;                                          int countFrom,
+<i>453</i>&nbsp;                                          boolean isColumn)
+<i>454</i>&nbsp;            throws Exception
+<i>455</i>&nbsp;    {
+<i>456</i>&nbsp;        // variable for positive vs negative
+<b class="fc"><i>457</i>&nbsp;        if(countUp)</b>
+<i>458</i>&nbsp;        {
+<b class="fc"><i>459</i>&nbsp;            for(int i = countFrom; i &lt; 8; i++)</b>
+<i>460</i>&nbsp;            {
+<b class="fc"><i>461</i>&nbsp;               if(straightLineMovementLogic(row, col, i, availableMoves, board, isColumn, sideColor))</b>
+<b class="fc"><i>462</i>&nbsp;                   break;</b>
+<i>463</i>&nbsp;            }
+<i>464</i>&nbsp;        }
+<i>465</i>&nbsp;
+<i>466</i>&nbsp;        else
+<i>467</i>&nbsp;        {
+<b class="fc"><i>468</i>&nbsp;            for(int i = countFrom; i &gt;= 0; i--)</b>
+<i>469</i>&nbsp;            {
+<b class="fc"><i>470</i>&nbsp;                if(straightLineMovementLogic(row, col, i, availableMoves, board, isColumn, sideColor))</b>
+<b class="fc"><i>471</i>&nbsp;                   break;</b>
+<i>472</i>&nbsp;            }
+<i>473</i>&nbsp;        }
+<b class="fc"><i>474</i>&nbsp;    }</b>
+<i>475</i>&nbsp;
+<i>476</i>&nbsp;    private boolean straightLineMovementLogic(int row,
+<i>477</i>&nbsp;                                           int col,
+<i>478</i>&nbsp;                                           int i,
+<i>479</i>&nbsp;                                           ArrayList&lt;String&gt; availableMoves,
+<i>480</i>&nbsp;                                           ChessBoard board,
+<i>481</i>&nbsp;                                           boolean isColumn,
+<i>482</i>&nbsp;                                           char sideColor) throws Exception
+<i>483</i>&nbsp;    {
+<i>484</i>&nbsp;        // tests for whether column or row and matching piece x check
+<b class="fc"><i>485</i>&nbsp;        if (</b>
+<b class="fc"><i>486</i>&nbsp;                (isColumn &amp;&amp; board.getPieceAtCoord(i, col).equals(&quot;x&quot;)) ||</b>
+<b class="fc"><i>487</i>&nbsp;                (!isColumn &amp;&amp; board.getPieceAtCoord(row, i).equals(&quot;x&quot;))</b>
+<i>488</i>&nbsp;        ) {
+<b class="fc"><i>489</i>&nbsp;            if(isColumn)</b>
+<b class="fc"><i>490</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(i, col));</b>
+<i>491</i>&nbsp;            else
+<b class="fc"><i>492</i>&nbsp;                availableMoves.add(board.getLocationCodeFromCoordinates(row, i));</b>
+<b class="fc"><i>493</i>&nbsp;            return false;</b>
+<i>494</i>&nbsp;        }
+<i>495</i>&nbsp;
+<i>496</i>&nbsp;        else
+<i>497</i>&nbsp;        {
+<i>498</i>&nbsp;            // add capture move if not same color
+<b class="fc"><i>499</i>&nbsp;            if (isColumn)</b>
+<i>500</i>&nbsp;            {
+<b class="fc"><i>501</i>&nbsp;                if (!board.getPieceAtCoord(i, col).startsWith(sideColor + &quot;&quot;))</b>
+<b class="fc"><i>502</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(i, col));</b>
+<i>503</i>&nbsp;
+<b class="fc"><i>504</i>&nbsp;                return true;</b>
+<i>505</i>&nbsp;            }
+<i>506</i>&nbsp;
+<i>507</i>&nbsp;            else
+<i>508</i>&nbsp;            {
+<b class="fc"><i>509</i>&nbsp;                if (!board.getPieceAtCoord(row, i).startsWith(sideColor + &quot;&quot;))</b>
+<b class="fc"><i>510</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, i));</b>
 <i>511</i>&nbsp;
-<i>512</i>&nbsp;            else
-<i>513</i>&nbsp;            {
-<b class="fc"><i>514</i>&nbsp;                if (!board.getPieceAtCoord(row, i).startsWith(sideColor + &quot;&quot;))</b>
-<b class="fc"><i>515</i>&nbsp;                    availableMoves.add(board.getLocationCodeFromCoordinates(row, i));</b>
+<b class="fc"><i>512</i>&nbsp;                return true;</b>
+<i>513</i>&nbsp;            }
+<i>514</i>&nbsp;        }
+<i>515</i>&nbsp;    }
 <i>516</i>&nbsp;
-<b class="fc"><i>517</i>&nbsp;                return true;</b>
-<i>518</i>&nbsp;            }
-<i>519</i>&nbsp;        }
-<i>520</i>&nbsp;    }
-<i>521</i>&nbsp;
-<i>522</i>&nbsp;    private ArrayList&lt;String&gt; getKingMoves(int i, int j, ChessBoard board, char sideColor) throws Exception
-<i>523</i>&nbsp;    {
-<b class="fc"><i>524</i>&nbsp;        ArrayList&lt;String&gt; kingMoves = new ArrayList&lt;&gt;();</b>
-<i>525</i>&nbsp;
-<i>526</i>&nbsp;        // all 8 possible movements
-<b class="fc"><i>527</i>&nbsp;        if(j+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i, j+1).charAt(0) != sideColor)</b>
-<b class="fc"><i>528</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i, j+1));</b>
-<b class="fc"><i>529</i>&nbsp;        if(j-1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(i, j-1).charAt(0) != sideColor)</b>
-<b class="fc"><i>530</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i, j-1));</b>
-<b class="fc"><i>531</i>&nbsp;        if(i+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i+1, j).charAt(0) != sideColor)</b>
-<b class="fc"><i>532</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j));</b>
-<b class="fc"><i>533</i>&nbsp;        if(i-1 &gt;=0 &amp;&amp; board.getPieceAtCoord(i-1, j).charAt(0) != sideColor)</b>
-<b class="fc"><i>534</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j));</b>
-<b class="fc"><i>535</i>&nbsp;        if(i+1 &lt;8 &amp;&amp; j+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i+1, j+1).charAt(0) != sideColor)</b>
-<b class="fc"><i>536</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j+1));</b>
-<b class="fc"><i>537</i>&nbsp;        if(i+1 &lt; 8 &amp;&amp; j-1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(i+1, j-1).charAt(0) != sideColor)</b>
-<b class="fc"><i>538</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j-1));</b>
-<b class="fc"><i>539</i>&nbsp;        if(i-1 &gt;= 0 &amp;&amp; j+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i-1, j+1).charAt(0) != sideColor)</b>
-<b class="fc"><i>540</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j+1));</b>
-<b class="fc"><i>541</i>&nbsp;        if(i-1 &gt;= 0 &amp;&amp; j-1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(i-1, j-1).charAt(0) != sideColor)</b>
-<b class="fc"><i>542</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j-1));</b>
-<i>543</i>&nbsp;
-<b class="fc"><i>544</i>&nbsp;        return kingMoves;</b>
-<i>545</i>&nbsp;    }
-<i>546</i>&nbsp;
-<i>547</i>&nbsp;    private boolean isPieceInDanger(String pieceCode, char oppositeColor, ChessBoard board)
-<i>548</i>&nbsp;    {
-<i>549</i>&nbsp;        try {
-<i>550</i>&nbsp;
-<b class="fc"><i>551</i>&nbsp;            int[] locationCoords  = board.getCoordsOfPiece(pieceCode);</b>
-<i>552</i>&nbsp;
-<b class="fc"><i>553</i>&nbsp;            String locationCode = board.getLocationCodeFromCoordinates(locationCoords[0],locationCoords[1]);</b>
-<i>554</i>&nbsp;
-<b class="fc"><i>555</i>&nbsp;            for (int i = 0; i &lt; 8; i++)</b>
-<i>556</i>&nbsp;            {
-<b class="fc"><i>557</i>&nbsp;                for (int j = 0; j &lt; 8; j++)</b>
-<i>558</i>&nbsp;                {
-<b class="fc"><i>559</i>&nbsp;                    if (board.getPieceAtCoord(i, j).charAt(0) == oppositeColor &amp;&amp;</b>
-<b class="fc"><i>560</i>&nbsp;                            board.getPieceAtCoord(i, j).charAt(1) != &#39;K&#39;)</b>
-<i>561</i>&nbsp;                    {
-<b class="fc"><i>562</i>&nbsp;                        ArrayList&lt;String&gt; availableMoves = getAvailableMoves(</b>
-<b class="fc"><i>563</i>&nbsp;                                board.getLocationCodeFromCoordinates(i, j),</b>
-<i>564</i>&nbsp;                                board);
-<i>565</i>&nbsp;
-<b class="fc"><i>566</i>&nbsp;                        if(availableMoves.contains(locationCode))</b>
-<b class="fc"><i>567</i>&nbsp;                            return true;</b>
-<i>568</i>&nbsp;                    }
-<i>569</i>&nbsp;
-<i>570</i>&nbsp;                    // this ensures that having two kings on the board doesn&#39;t
-<i>571</i>&nbsp;                    // result in an endless loop, using a &quot;simple&quot; king move
-<i>572</i>&nbsp;                    // calculation
-<b class="fc"><i>573</i>&nbsp;                    if (board.getPieceAtCoord(i, j).charAt(0) == oppositeColor &amp;&amp;</b>
-<b class="fc"><i>574</i>&nbsp;                            board.getPieceAtCoord(i, j).charAt(1) == &#39;K&#39;)</b>
-<i>575</i>&nbsp;                    {
-<b class="fc"><i>576</i>&nbsp;                        ArrayList&lt;String&gt; kingMoves = getKingMoves(i,j,board, oppositeColor);</b>
-<i>577</i>&nbsp;
-<b class="fc"><i>578</i>&nbsp;                        if(kingMoves.contains(locationCode))</b>
-<i>579</i>&nbsp;                        {
-<b class="fc"><i>580</i>&nbsp;                            return true;</b>
-<i>581</i>&nbsp;                        }
-<i>582</i>&nbsp;                    }
-<i>583</i>&nbsp;                }
-<i>584</i>&nbsp;            }
-<i>585</i>&nbsp;
-<b class="fc"><i>586</i>&nbsp;            return false;</b>
-<i>587</i>&nbsp;        }
-<b class="nc"><i>588</i>&nbsp;        catch(Exception x)</b>
-<i>589</i>&nbsp;        {
-<b class="nc"><i>590</i>&nbsp;            return false;</b>
-<i>591</i>&nbsp;        }
+<i>517</i>&nbsp;    private ArrayList&lt;String&gt; getKingMoves(int i, int j, ChessBoard board, char sideColor) throws Exception
+<i>518</i>&nbsp;    {
+<b class="fc"><i>519</i>&nbsp;        ArrayList&lt;String&gt; kingMoves = new ArrayList&lt;&gt;();</b>
+<i>520</i>&nbsp;
+<i>521</i>&nbsp;        // all 8 possible movements
+<b class="fc"><i>522</i>&nbsp;        if(j+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i, j+1).charAt(0) != sideColor)</b>
+<b class="fc"><i>523</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i, j+1));</b>
+<b class="fc"><i>524</i>&nbsp;        if(j-1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(i, j-1).charAt(0) != sideColor)</b>
+<b class="fc"><i>525</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i, j-1));</b>
+<b class="fc"><i>526</i>&nbsp;        if(i+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i+1, j).charAt(0) != sideColor)</b>
+<b class="fc"><i>527</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j));</b>
+<b class="fc"><i>528</i>&nbsp;        if(i-1 &gt;=0 &amp;&amp; board.getPieceAtCoord(i-1, j).charAt(0) != sideColor)</b>
+<b class="fc"><i>529</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j));</b>
+<b class="fc"><i>530</i>&nbsp;        if(i+1 &lt;8 &amp;&amp; j+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i+1, j+1).charAt(0) != sideColor)</b>
+<b class="fc"><i>531</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j+1));</b>
+<b class="fc"><i>532</i>&nbsp;        if(i+1 &lt; 8 &amp;&amp; j-1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(i+1, j-1).charAt(0) != sideColor)</b>
+<b class="fc"><i>533</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i+1, j-1));</b>
+<b class="fc"><i>534</i>&nbsp;        if(i-1 &gt;= 0 &amp;&amp; j+1 &lt; 8 &amp;&amp; board.getPieceAtCoord(i-1, j+1).charAt(0) != sideColor)</b>
+<b class="fc"><i>535</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j+1));</b>
+<b class="fc"><i>536</i>&nbsp;        if(i-1 &gt;= 0 &amp;&amp; j-1 &gt;= 0 &amp;&amp; board.getPieceAtCoord(i-1, j-1).charAt(0) != sideColor)</b>
+<b class="fc"><i>537</i>&nbsp;            kingMoves.add(board.getLocationCodeFromCoordinates(i-1, j-1));</b>
+<i>538</i>&nbsp;
+<b class="fc"><i>539</i>&nbsp;        return kingMoves;</b>
+<i>540</i>&nbsp;    }
+<i>541</i>&nbsp;
+<i>542</i>&nbsp;    private boolean isPieceInDanger(String pieceCode, char oppositeColor, ChessBoard board)
+<i>543</i>&nbsp;    {
+<i>544</i>&nbsp;        try {
+<i>545</i>&nbsp;
+<b class="fc"><i>546</i>&nbsp;            int[] locationCoords  = board.getCoordsOfPiece(pieceCode);</b>
+<i>547</i>&nbsp;
+<b class="fc"><i>548</i>&nbsp;            String locationCode = board.getLocationCodeFromCoordinates(locationCoords[0],locationCoords[1]);</b>
+<i>549</i>&nbsp;
+<b class="fc"><i>550</i>&nbsp;            for (int i = 0; i &lt; 8; i++)</b>
+<i>551</i>&nbsp;            {
+<b class="fc"><i>552</i>&nbsp;                for (int j = 0; j &lt; 8; j++)</b>
+<i>553</i>&nbsp;                {
+<b class="fc"><i>554</i>&nbsp;                    if (board.getPieceAtCoord(i, j).charAt(0) == oppositeColor &amp;&amp;</b>
+<b class="fc"><i>555</i>&nbsp;                            board.getPieceAtCoord(i, j).charAt(1) != &#39;K&#39;)</b>
+<i>556</i>&nbsp;                    {
+<b class="fc"><i>557</i>&nbsp;                        ArrayList&lt;String&gt; availableMoves = getAvailableMoves(</b>
+<b class="fc"><i>558</i>&nbsp;                                board.getLocationCodeFromCoordinates(i, j),</b>
+<i>559</i>&nbsp;                                board);
+<i>560</i>&nbsp;
+<b class="fc"><i>561</i>&nbsp;                        if(availableMoves.contains(locationCode))</b>
+<b class="fc"><i>562</i>&nbsp;                            return true;</b>
+<i>563</i>&nbsp;                    }
+<i>564</i>&nbsp;
+<i>565</i>&nbsp;                    // this ensures that having two kings on the board doesn&#39;t
+<i>566</i>&nbsp;                    // result in an endless loop, using a &quot;simple&quot; king move
+<i>567</i>&nbsp;                    // calculation
+<b class="fc"><i>568</i>&nbsp;                    if (board.getPieceAtCoord(i, j).charAt(0) == oppositeColor &amp;&amp;</b>
+<b class="fc"><i>569</i>&nbsp;                            board.getPieceAtCoord(i, j).charAt(1) == &#39;K&#39;)</b>
+<i>570</i>&nbsp;                    {
+<b class="fc"><i>571</i>&nbsp;                        ArrayList&lt;String&gt; kingMoves = getKingMoves(i,j,board, oppositeColor);</b>
+<i>572</i>&nbsp;
+<b class="fc"><i>573</i>&nbsp;                        if(kingMoves.contains(locationCode))</b>
+<i>574</i>&nbsp;                        {
+<b class="fc"><i>575</i>&nbsp;                            return true;</b>
+<i>576</i>&nbsp;                        }
+<i>577</i>&nbsp;                    }
+<i>578</i>&nbsp;                }
+<i>579</i>&nbsp;            }
+<i>580</i>&nbsp;
+<b class="fc"><i>581</i>&nbsp;            return false;</b>
+<i>582</i>&nbsp;        }
+<b class="nc"><i>583</i>&nbsp;        catch(Exception x)</b>
+<i>584</i>&nbsp;        {
+<b class="nc"><i>585</i>&nbsp;            return false;</b>
+<i>586</i>&nbsp;        }
+<i>587</i>&nbsp;    }
+<i>588</i>&nbsp;
+<i>589</i>&nbsp;    private Predicate&lt;ChessBoard&gt; predicateIsPieceInDanger(String pieceCode, char oppositeColor)
+<i>590</i>&nbsp;    {
+<b class="fc"><i>591</i>&nbsp;            return p -&gt; isPieceInDanger(pieceCode, oppositeColor, p);</b>
 <i>592</i>&nbsp;    }
-<i>593</i>&nbsp;
-<i>594</i>&nbsp;    private Predicate&lt;ChessBoard&gt; predicateIsPieceInDanger(String pieceCode, char oppositeColor)
-<i>595</i>&nbsp;    {
-<b class="fc"><i>596</i>&nbsp;            return p -&gt; isPieceInDanger(pieceCode, oppositeColor, p);</b>
-<i>597</i>&nbsp;    }
-<i>598</i>&nbsp;}
+<i>593</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-08-22 04:10</div>
+    <div style="float:right;">generated on 2018-08-22 20:01</div>
 </div>
 </body>
 </html>

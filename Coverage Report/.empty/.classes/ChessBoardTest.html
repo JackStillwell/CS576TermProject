@@ -58,10 +58,10 @@
 </td>
 <td class="coverageStat">
   <span class="percent">
-    81%
+    79.1%
   </span>
   <span class="absValue">
-    (68/ 84)
+    (68/ 86)
   </span>
 </td>
 </tr>
@@ -226,37 +226,37 @@
 <i>152</i>&nbsp;
 <i>153</i>&nbsp;        try{
 <b class="fc"><i>154</i>&nbsp;            invalidCoordConversion = board.getCoordCharFromCoordNum(8);</b>
-<i>155</i>&nbsp;            fail(&quot;Exception not triggered.&quot;);
-<b class="fc"><i>156</i>&nbsp;        }</b>
-<i>157</i>&nbsp;        catch(Exception x)
-<b class="fc"><i>158</i>&nbsp;        {</b>
-<b class="nc"><i>159</i>&nbsp;            assertEquals(&quot;Invalid Int to Char Coordinate Conversion: 8&quot;, x.getMessage());</b>
-<b class="fc"><i>160</i>&nbsp;        }</b>
-<i>161</i>&nbsp;    }
+<b class="nc"><i>155</i>&nbsp;            fail(&quot;Exception not triggered.&quot;);</b>
+<i>156</i>&nbsp;        }
+<b class="fc"><i>157</i>&nbsp;        catch(Exception x)</b>
+<i>158</i>&nbsp;        {
+<b class="fc"><i>159</i>&nbsp;            assertEquals(&quot;Invalid Int to Char Coordinate Conversion: 8&quot;, x.getMessage());</b>
+<b class="nc"><i>160</i>&nbsp;        }</b>
+<b class="fc"><i>161</i>&nbsp;    }</b>
 <i>162</i>&nbsp;
 <i>163</i>&nbsp;    @org.junit.jupiter.api.Test
 <i>164</i>&nbsp;    void testInvalidCharToIntCoordConversion()
 <i>165</i>&nbsp;    {
 <i>166</i>&nbsp;        int invalidCoordConversion;
-<b class="fc"><i>167</i>&nbsp;</b>
-<i>168</i>&nbsp;        ChessBoard board = new ChessBoard();
+<i>167</i>&nbsp;
+<b class="fc"><i>168</i>&nbsp;        ChessBoard board = new ChessBoard();</b>
 <i>169</i>&nbsp;
-<b class="fc"><i>170</i>&nbsp;        try{</b>
-<i>171</i>&nbsp;            invalidCoordConversion = board.getCoordNumFromCoordChar(&#39;x&#39;);
-<b class="fc"><i>172</i>&nbsp;            fail(&quot;Exception not triggered.&quot;);</b>
+<i>170</i>&nbsp;        try{
+<b class="fc"><i>171</i>&nbsp;            invalidCoordConversion = board.getCoordNumFromCoordChar(&#39;x&#39;);</b>
+<b class="nc"><i>172</i>&nbsp;            fail(&quot;Exception not triggered.&quot;);</b>
 <i>173</i>&nbsp;        }
 <b class="fc"><i>174</i>&nbsp;        catch(Exception x)</b>
-<b class="nc"><i>175</i>&nbsp;        {</b>
+<i>175</i>&nbsp;        {
 <b class="fc"><i>176</i>&nbsp;            assertEquals(&quot;Invalid Char to Int Coordinate Conversion: x&quot;, x.getMessage());</b>
-<i>177</i>&nbsp;        }
-<i>178</i>&nbsp;    }
+<b class="nc"><i>177</i>&nbsp;        }</b>
+<b class="fc"><i>178</i>&nbsp;    }</b>
 <i>179</i>&nbsp;}
 </div>
 </div>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2018-08-22 04:10</div>
+    <div style="float:right;">generated on 2018-08-22 20:01</div>
 </div>
 </body>
 </html>
